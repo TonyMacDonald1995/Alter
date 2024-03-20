@@ -1,4 +1,4 @@
-package org.alter.plugins.content.items.mystery_box;
+package org.alter.plugins.content.items.mystery_box
 
 import org.alter.game.model.priv.Privilege
 

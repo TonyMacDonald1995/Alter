@@ -572,6 +572,16 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
 
     fun onAnimation(animid: Int, plugin: Plugin.() -> Unit) = r.bindOnAnimation(animid, plugin)
 
+    /**
+     * Invoke [plugin] when player starts fishing at a spot
+     */
+    fun on_start_fishing(spotId: Int, plugin: Plugin.() -> Unit) = r.bindOnStartFishing(npc_spot = spotId, plugin = plugin)
+
+    /**
+     * Invoke [plugin] when player catches a fish at a spot
+     */
+    fun on_catch_fish(npc_spot: Int, plugin: Plugin.() -> Unit) = r.bindOnCatchFish(npc_spot = npc_spot, plugin = plugin)
+
     fun getNpcCombatDef(npc: Int): NpcCombatDef? {
         return world.plugins.npcCombatDefs.getOrDefault(npc, null)
     }

@@ -10,11 +10,9 @@ import org.alter.game.message.impl.*
 import org.alter.game.model.World
 import org.alter.game.model.attr.COMBAT_TARGET_FOCUS_ATTR
 import org.alter.game.model.attr.CURRENT_SHOP_ATTR
-import org.alter.game.model.attr.PROTECT_ITEM_ATTR
 import org.alter.game.model.attr.CHANGE_LOGGING
 import org.alter.game.model.bits.BitStorage
 import org.alter.game.model.bits.StorageBits
-import org.alter.game.model.container.ContainerStackType
 import org.alter.game.model.container.ItemContainer
 import org.alter.game.model.entity.Entity
 import org.alter.game.model.entity.Pawn
@@ -33,7 +31,7 @@ import gg.rsmod.util.BitManipulation
  * The id of the script used to initialise the interface overlay options. The 'big' variant of this script
  * is used as it supports up to eight options rather than five.
  *
- * https://github.com/RuneStar/cs2-scripts/blob/master/scripts/[clientscript,interface_inv_init_big].cs2
+ * https://github.com/RuneStar/cs2-scripts/blob/master/scripts/clientscript,interface_inv_init_big.cs2
  */
 const val INTERFACE_INV_INIT_BIG = 150
 
@@ -565,7 +563,7 @@ fun Player.sendWeaponComponentInformation() {
         val definition = world.definitions.get(ItemDef::class.java, weapon.id)
         name = definition.name
 
-        panel = Math.max(0, definition.weaponType)
+        panel = 0.coerceAtLeast(definition.weaponType)
         setComponentText(593, 2, "Category: " + WeaponCategory.get(definition.category))
     } else {
         name = "Unarmed"
@@ -616,6 +614,6 @@ fun Player.getMagicDamageBonus(): Int = equipmentBonuses[12]
 
 fun Player.getPrayerBonus(): Int = equipmentBonuses[13]
 
-fun Player.format_bonus_with_sign(value: Int): String {
+fun Player.formatBonusWithSign(value: Int): String {
      return if (value < 0) value.toString() else "+$value"
 }

@@ -6,9 +6,7 @@ import gg.rsmod.net.packet.DataSignature
 import gg.rsmod.net.packet.DataTransformation
 import gg.rsmod.net.packet.DataType
 import gg.rsmod.util.ServerProperties
-import java.util.ArrayList
-import java.util.EnumMap
-import java.util.LinkedHashMap
+import java.util.*
 
 /**
  * A set of [UpdateBlockType] information that is required to encode its respective
@@ -62,14 +60,14 @@ class UpdateBlockSet {
 
         val orders = properties.getOrDefault("order", ArrayList<Any>())
         orders.forEach { order ->
-            val blockType = UpdateBlockType.valueOf((order as String).toUpperCase())
+            val blockType = UpdateBlockType.valueOf((order as String).uppercase(Locale.getDefault()))
             this.updateBlockOrder.add(blockType)
         }
 
         val blocks = properties.getOrDefault("blocks", ArrayList<Any>())
         blocks.forEach { packet ->
             val values = packet as LinkedHashMap<*, *>
-            val blockType = (values["block"] as String).toUpperCase()
+            val blockType = (values["block"] as String).uppercase(Locale.getDefault())
             val bit = if (values.containsKey("bit")) Integer.decode(values["bit"].toString()) else -1
             val structureValues = mutableListOf<MessageValue>()
 
@@ -81,7 +79,9 @@ class UpdateBlockSet {
                     val order = if (map.containsKey("order")) DataOrder.valueOf(map["order"] as String) else DataOrder.BIG
                     val transform = if (map.containsKey("trans")) DataTransformation.valueOf(map["trans"] as String) else DataTransformation.NONE
                     val type = DataType.valueOf(map["type"] as String)
-                    val signature = if (map.containsKey("sign")) DataSignature.valueOf((map["sign"] as String).toUpperCase()) else DataSignature.SIGNED
+                    val signature = if (map.containsKey("sign")) DataSignature.valueOf((map["sign"] as String).uppercase(
+                        Locale.getDefault()
+                    )) else DataSignature.SIGNED
                     structureValues.add(MessageValue(id = name, order = order, transformation = transform, type = type, signature = signature))
                 }
             }

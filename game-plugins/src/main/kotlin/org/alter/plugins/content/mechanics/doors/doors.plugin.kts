@@ -138,20 +138,23 @@ fun copy_stick_vars(from: GameObject, to: GameObject) {
 }
 
 fun add_stick_var(world: World, obj: GameObject) {
-    var currentChanges = get_stick_changes(obj)
-    if (obj.attr.has(STICK_STATE) && Math.abs(world.currentCycle - obj.attr[STICK_STATE]!!.lastChangeCycle) >= resetStickDelay) {
-        currentChanges = 0
-    }
-    obj.attr[STICK_STATE] = DoorStickState(currentChanges + 1, world.currentCycle)
+    //TODO: add_stick_var
+//    var currentChanges = get_stick_changes(obj)
+//    if (obj.attr.has(STICK_STATE) && Math.abs(world.currentCycle - obj.attr[STICK_STATE]!!.lastChangeCycle) >= resetStickDelay) {
+//        currentChanges = 0
+//    }
+//    obj.attr[STICK_STATE] = DoorStickState(currentChanges + 1, world.currentCycle)
 }
 
 fun get_stick_changes(obj: GameObject): Int = obj.attr[STICK_STATE]?.changeCount ?: 0
 
 fun is_stuck(world: World, obj: GameObject): Boolean {
-    val stuck = get_stick_changes(obj) >= changesBeforeStick
-    if (stuck && Math.abs(world.currentCycle - obj.attr[STICK_STATE]!!.lastChangeCycle) >= resetStickDelay) {
-        obj.attr.remove(STICK_STATE)
-        return false
-    }
-    return stuck
+    //TODO: is_stuck
+//    val stuck = get_stick_changes(obj) >= changesBeforeStick
+//    if (stuck && Math.abs(world.currentCycle - obj.attr[STICK_STATE]!!.lastChangeCycle) >= resetStickDelay) {
+//        obj.attr.remove(STICK_STATE)
+//        return false
+//    }
+//    return stuck
+    return false
 }

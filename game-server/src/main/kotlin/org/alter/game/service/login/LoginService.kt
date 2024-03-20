@@ -44,11 +44,11 @@ class LoginService : Service {
 
     private var threadCount = 1
 
-    override fun init(server: org.alter.game.Server, world: World, serviceProperties: ServerProperties) {
+    override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         threadCount = serviceProperties.getOrDefault("thread-count", 3)
     }
 
-    override fun postLoad(server: org.alter.game.Server, world: World) {
+    override fun postLoad(server: Server, world: World) {
         serializer = world.getService(PlayerSerializerService::class.java, searchSubclasses = true)!!
 
         val worldVerificationService = world.getService(WorldVerificationService::class.java, searchSubclasses = true) ?: SimpleWorldVerificationService()
@@ -59,10 +59,10 @@ class LoginService : Service {
         }
     }
 
-    override fun bindNet(server: org.alter.game.Server, world: World) {
+    override fun bindNet(server: Server, world: World) {
     }
 
-    override fun terminate(server: org.alter.game.Server, world: World) {
+    override fun terminate(server: Server, world: World) {
     }
 
     fun addLoginRequest(world: World, request: LoginRequest) {

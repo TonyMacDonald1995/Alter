@@ -662,7 +662,7 @@ enum class Song(val title: String, val id: Int) {
             values.forEach { song ->
                 if (song.id == id) return song.title
             }
-            return "";
+            return ""
         }
 
         fun getId(title: String): Int {

@@ -1,4 +1,4 @@
-package org.alter.plugins.content.objects;
+package org.alter.plugins.content.objects
 
 /**
  *  @author <a href="https://github.com/CloudS3c">Cl0ud</a>

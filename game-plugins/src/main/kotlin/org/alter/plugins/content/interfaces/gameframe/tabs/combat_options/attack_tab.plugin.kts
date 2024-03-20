@@ -1,4 +1,4 @@
-package org.alter.plugins.content.interfaces.attack
+package org.alter.plugins.content.interfaces.gameframe.tabs.combat_options
 
 import org.alter.plugins.content.interfaces.attack.AttackTab.ATTACK_TAB_INTERFACE_ID
 import org.alter.plugins.content.interfaces.attack.AttackTab.ATTACK_STYLE_VARP
@@ -7,6 +7,7 @@ import org.alter.plugins.content.interfaces.attack.AttackTab.SPECIAL_ATTACK_VARP
 import org.alter.plugins.content.interfaces.attack.AttackTab.setEnergy
 import org.alter.game.model.attr.NEW_ACCOUNT_ATTR
 import org.alter.plugins.content.combat.specialattack.SpecialAttacks
+import org.alter.plugins.content.interfaces.attack.AttackTab
 
 /**
  * First log-in logic (when accounts have just been made).

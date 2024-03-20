@@ -15,7 +15,7 @@ object Animation {
      * Prayer Animations
      */
     const val BURY_BONE_ANIM = 827
-    const val OFFER_BONES_TO_ALTER_ANIM = 896;
+    const val OFFER_BONES_TO_ALTER_ANIM = 896
     const val PRAY_AT_ALTAR_ANIM = 645
     /**
      * Firemaking Animations
@@ -25,6 +25,7 @@ object Animation {
      * Cooking Animations
      */
     const val COOKING_ON_FIRE = 883
+    const val COOKING_ON_RANGE_896 = 896
     const val COOKING_ON_RANGE = 897
     /**
      * Runecrafting Animations
@@ -417,7 +418,6 @@ object Animation {
     const val CHAT_CONFUSED2 = 576
     const val CHAT_CONFUSED3 = 577
     const val CHAT_CONFUSED4 = 578
-    const val CHAT_DEFAULT = 591
     const val CHAT_DOWN1 = 562
     const val CHAT_DOWN2 = 563
     const val CHAT_DOWN3 = 564
@@ -455,6 +455,7 @@ object Animation {
     const val CHAT_QUIZ1 = 588
     const val CHAT_QUIZ2 = 589
     const val CHAT_QUIZ3 = 590
+    const val CHAT_DEFAULT = 591
     const val CHAT_SAD1 = 610
     const val CHAT_SAD2 = 611
     const val CHAT_SAD3 = 612

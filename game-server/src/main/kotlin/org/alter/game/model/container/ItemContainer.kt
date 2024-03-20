@@ -82,7 +82,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
      * Defaults to -1 if none is found.
      */
     fun getLastFreeSlot(): Int {
-        var lastEmpty = -1;
+        var lastEmpty = -1
         for (index in items.indices) {
             if (items[index] == null)
                 lastEmpty = index
@@ -108,7 +108,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
         return lastEmpty
     }
     fun getLastFreeSlotReversed(): Int {
-        var lastEmpty = -1;
+        var lastEmpty = -1
         for (index in items.indices.reversed()) {
             if (items[index] == null)
                 lastEmpty = index

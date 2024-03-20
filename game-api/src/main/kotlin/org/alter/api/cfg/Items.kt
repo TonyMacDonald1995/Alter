@@ -4813,6 +4813,7 @@ object Items {
     const val BIRDS_EGG_5078 = 5078
     const val VARROCK_ARMOUR = 5087
     const val SEA_SNAKE = 5089
+    const val ITEM_5092 = 5092
     const val MORYTANIA_LEGS = 5093
     const val EXPLORERS_RING = 5095
     const val MARIGOLD_SEED = 5096

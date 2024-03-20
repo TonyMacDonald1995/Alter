@@ -18,7 +18,7 @@ class OpPlayerTHandler : MessageHandler<OpPlayerTMessage> {
         val child = message.componentHash and 0xFFFF
 
         if (!client.lock.canPlayerInteract()) {
-            return;
+            return
         }
 
         log(client, "Spell on player: player=%s. index=%d, component=[%d:%d]", player.displayname, message.playerIndex, parent, child)

@@ -1,6 +1,9 @@
 package org.alter.plugins.content
 
 import org.alter.api.InterfaceDestination
+import org.alter.game.model.attr.INTERACTING_ITEM_SLOT
+import org.alter.game.model.attr.OTHER_ITEM_SLOT_ATTR
+import org.alter.plugins.content.area.tutorial_island.TutorialIsland
 
 /**
  * Closing main modal for players.

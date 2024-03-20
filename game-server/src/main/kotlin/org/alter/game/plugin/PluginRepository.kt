@@ -1350,7 +1350,7 @@ class PluginRepository(val world: World) {
         return true
     }
 
-    private final val ItemOnNpcGlobal = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
+    private val ItemOnNpcGlobal = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
 
     /**
      *  Will execute if the item was used on any Npc

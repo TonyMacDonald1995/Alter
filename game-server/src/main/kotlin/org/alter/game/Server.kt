@@ -230,7 +230,7 @@ class Server {
         do {
             val name = gameProperties.getOrDefault("name", "Alter")
             // Can add print("") here but keep in mind that it will merge with other lines.
-            input = readLine() /** @TODO Don't know but readlnOrNull() shows that it does not exist. */
+            input = readlnOrNull() /** @TODO Don't know but readlnOrNull() shows that it does not exist. */
             if (input == null) {
                 break
             }

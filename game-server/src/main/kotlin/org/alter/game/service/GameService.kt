@@ -123,17 +123,17 @@ class GameService : Service {
      */
     internal var pause = false
 
-    override fun init(server: org.alter.game.Server, world: World, serviceProperties: ServerProperties) {
+    override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         this.world = world
         populateTasks(serviceProperties)
         maxMessagesPerCycle = serviceProperties.getOrDefault("messages-per-cycle", 30)
         executor.scheduleAtFixedRate(this::cycle, 0, world.gameContext.cycleTime.toLong(), TimeUnit.MILLISECONDS)
     }
 
-    override fun postLoad(server: org.alter.game.Server, world: World) {
+    override fun postLoad(server: Server, world: World) {
     }
 
-    override fun terminate(server: org.alter.game.Server, world: World) {
+    override fun terminate(server: Server, world: World) {
     }
 
     private fun populateTasks(serviceProperties: ServerProperties) {
@@ -179,7 +179,7 @@ class GameService : Service {
         }
     }
 
-    override fun bindNet(server: org.alter.game.Server, world: World) {
+    override fun bindNet(server: Server, world: World) {
     }
 
     /**

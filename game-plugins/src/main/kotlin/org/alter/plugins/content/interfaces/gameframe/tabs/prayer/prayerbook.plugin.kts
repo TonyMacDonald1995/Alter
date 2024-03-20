@@ -1,4 +1,4 @@
-package org.alter.plugins.content.interfaces.prayerbook;
+package org.alter.plugins.content.interfaces.gameframe.tabs.prayer
 
 /**
  *  @author <a href="https://github.com/CloudS3c">Cl0ud</a>

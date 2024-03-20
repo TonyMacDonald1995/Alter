@@ -5818,8 +5818,8 @@ object Objs {
     const val STAFF_OF_BOB_THE_CAT_10076 = 10076
     const val ARMOUR_10077 = 10077
     const val CUPBOARD_10078 = 10078
-    const val COPPER_ROCKS = 10079
-    const val TIN_ROCKS = 10080
+    const val COPPER_ROCKS_10079 = 10079
+    const val TIN_ROCKS_10080 = 10080
     const val ROCKS_10081 = 10081
     const val FURNACE_10082 = 10082
     const val BANK_BOOTH_10083 = 10083
@@ -6476,9 +6476,9 @@ object Objs {
     const val STAIRCASE_11358 = 11358
     const val TIN_ROCKS_11360 = 11360
     const val TIN_ROCKS_11361 = 11361
-    const val CLAY_ROCKS = 11362
+    const val CLAY_ROCKS_11362 = 11362
     const val CLAY_ROCKS_11363 = 11363
-    const val IRON_ROCKS = 11364
+    const val IRON_ROCKS_11364 = 11364
     const val IRON_ROCKS_11365 = 11365
     const val COAL_ROCKS_11366 = 11366
     const val COAL_ROCKS_11367 = 11367
@@ -6492,7 +6492,7 @@ object Objs {
     const val ADAMANTITE_ROCKS_11375 = 11375
     const val RUNITE_ROCKS_11376 = 11376
     const val RUNITE_ROCKS_11377 = 11377
-    const val BLURITE_ROCKS = 11378
+    const val BLURITE_ROCKS_11378 = 11378
     const val BLURITE_ROCKS_11379 = 11379
     const val GEM_ROCKS = 11380
     const val GEM_ROCKS_11381 = 11381

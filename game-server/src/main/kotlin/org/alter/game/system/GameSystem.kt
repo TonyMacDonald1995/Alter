@@ -2,7 +2,6 @@ package org.alter.game.system
 
 import org.alter.game.message.Message
 import org.alter.game.message.MessageHandler
-import org.alter.game.message.impl.*
 import org.alter.game.model.World
 import org.alter.game.model.entity.Client
 import org.alter.game.service.GameService

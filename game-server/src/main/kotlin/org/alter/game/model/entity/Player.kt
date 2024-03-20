@@ -328,6 +328,7 @@ open class Player(world: World) : Pawn(world) {
         val oldRegion = lastTile?.regionId ?: -1
         if (oldRegion != tile.regionId) {
             if (oldRegion != -1) {
+                world.plugins.executeRegionChange(this)
                 world.plugins.executeRegionExit(this, oldRegion)
             }
             world.plugins.executeRegionEnter(this, tile.regionId)
@@ -491,7 +492,7 @@ open class Player(world: World) : Pawn(world) {
         if (oldXp >= SkillSet.MAX_XP) {
             return
         }
-        val newXp = Math.min(SkillSet.MAX_XP.toDouble(), (oldXp + (xp * xpRate)))
+        val newXp = SkillSet.MAX_XP.toDouble().coerceAtMost((oldXp + (xp * xpRate)))
         /*
          * Amount of levels that have increased with the addition of [xp].
          */

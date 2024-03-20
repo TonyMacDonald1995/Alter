@@ -45,7 +45,7 @@ class XteaKeyService : Service {
     override fun bindNet(server: Server, world: World) {
     }
 
-    override fun terminate(server: org.alter.game.Server, world: World) {
+    override fun terminate(server: Server, world: World) {
     }
 
     fun get(region: Int): IntArray {

@@ -13,7 +13,7 @@ class EnumDefinitions(id : Int, world : World) {
 
     private val world = world
 
-    fun get() : EnumDefinitions? {
+    fun get() : EnumDefinitions {
         val struct = world.definitions.getNullable(EnumDef::class.java, enumId)
 
         if (struct != null) {
@@ -40,10 +40,6 @@ class EnumDefinitions(id : Int, world : World) {
     }
 
     fun getValueAsBoolean(param: Int) : Boolean {
-        if(values.getOrDefault(param, "no") == "yes") {
-            return true
-        }
-
-        return false
+        return values.getOrDefault(param, "no") == "yes"
     }
 }

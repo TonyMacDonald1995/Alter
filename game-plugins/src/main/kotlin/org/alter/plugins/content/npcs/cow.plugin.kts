@@ -1,4 +1,4 @@
-package org.alter.plugins.content.npcs;
+package org.alter.plugins.content.npcs
 
 import org.alter.plugins.content.combat.isBeingAttacked
 

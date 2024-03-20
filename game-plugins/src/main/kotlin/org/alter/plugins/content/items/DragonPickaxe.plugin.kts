@@ -1,4 +1,4 @@
-package org.alter.plugins.content.items;
+package org.alter.plugins.content.items
 
 import org.alter.plugins.content.combat.specialattack.SpecialAttacks
 

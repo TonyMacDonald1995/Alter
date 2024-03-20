@@ -45,7 +45,7 @@ abstract class QueueTaskSet {
 
     /**
      * Remove all [QueueTask] from our [queue], invoking each task's [QueueTask.terminate]
-     * before-hand.
+     * beforehand.
      */
     fun terminateTasks() {
         queue.forEach { it.terminate() }

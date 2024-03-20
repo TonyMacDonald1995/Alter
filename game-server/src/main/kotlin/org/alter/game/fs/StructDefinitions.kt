@@ -39,10 +39,6 @@ class StructDefinitions(id : Int, world : World) {
     }
 
     fun getParamAsBoolean(param: Int) : Boolean {
-        if(params.getOrDefault(param, "no") == "yes") {
-            return true
-        }
-
-        return false
+        return params.getOrDefault(param, "no") == "yes"
     }
 }

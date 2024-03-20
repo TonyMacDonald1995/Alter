@@ -39,9 +39,9 @@ object Poison {
 
     fun setHpOrb(player: Player, state: OrbState) {
         val value = when (state) {
-            Poison.OrbState.NONE -> 0
-            Poison.OrbState.POISON -> 1
-            Poison.OrbState.VENOM -> 1_000_000
+            OrbState.NONE -> 0
+            OrbState.POISON -> 1
+            OrbState.VENOM -> 1_000_000
         }
         player.setVarp(HP_ORB_VARP, value)
     }
