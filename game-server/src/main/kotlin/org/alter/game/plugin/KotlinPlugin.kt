@@ -491,6 +491,8 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
      */
     fun on_item_unequip(item: Int, logic: (Plugin).() -> Unit) = r.bindUnequipItem(item, logic)
 
+    fun on_change_region(logic: (Plugin).() -> Unit) = r.bindRegionChange(logic)
+
     /**
      * Invoke [logic] when a player enters a region (8x8 Chunks).
      */

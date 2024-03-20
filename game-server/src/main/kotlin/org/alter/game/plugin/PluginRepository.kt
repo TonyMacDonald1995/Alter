@@ -202,6 +202,8 @@ class PluginRepository(val world: World) {
 
     private val componentToComponentItemSwapPlugins = Long2ObjectOpenHashMap<Plugin.() -> Unit>()
 
+    private val changeRegionPlugins: MutableList<Plugin.() -> Unit> = mutableListOf()
+
     /**
      * A map that contains any plugin that will be executed upon entering a new
      * region. The key is the region id and the value is a list of plugins
@@ -1067,6 +1069,14 @@ class PluginRepository(val world: World) {
 
     fun executeSkillLevelUp(p: Player) {
         skillLevelUps?.let { p.executePlugin(it) }
+    }
+
+    fun bindRegionChange(plugin: Plugin.() -> Unit) {
+            changeRegionPlugins.add(plugin)
+    }
+
+    fun executeRegionChange(p: Player) {
+        changeRegionPlugins.forEach { logic -> p.executePlugin(logic) }
     }
 
     fun bindRegionEnter(regionId: Int, plugin: Plugin.() -> Unit) {
