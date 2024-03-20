@@ -1,14 +1,12 @@
 package org.alter.game.service.serializer
 
-import org.alter.game.Server
+import gg.rsmod.net.codec.login.LoginRequest
+import gg.rsmod.util.ServerProperties
 import org.alter.game.model.Tile
 import org.alter.game.model.World
-import org.alter.game.model.attr.APPEARANCE_SET_ATTR
 import org.alter.game.model.attr.NEW_ACCOUNT_ATTR
 import org.alter.game.model.entity.Client
 import org.alter.game.service.Service
-import gg.rsmod.net.codec.login.LoginRequest
-import gg.rsmod.util.ServerProperties
 import org.mindrot.jbcrypt.BCrypt
 
 /**
@@ -36,7 +34,8 @@ abstract class PlayerSerializerService : Service {
 
     fun configureNewPlayer(client: Client, request: LoginRequest) {
         client.attr.put(NEW_ACCOUNT_ATTR, true)
-        client.attr.put(APPEARANCE_SET_ATTR, false)
+        //client.attr.put(APPEARANCE_SET_ATTR, false)
+        //client.attr.put(DISPLAY_NAME_SET_ATTR, false)
 
         client.passwordHash = BCrypt.hashpw(request.password, BCrypt.gensalt(16))
         client.tile = startTile

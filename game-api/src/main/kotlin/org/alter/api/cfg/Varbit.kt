@@ -1095,4 +1095,6 @@ object Varbit {
     const val SHOW_RAPID_HEALING_PRAYERS = 6576
     const val SHOW_PRAYERS_YOU_LACK_THE_LEVEL = 6577
     const val SHOW_PRAYERS_YOU_LACK_THE_REQUIREMENTS = 6578
+
+    const val FLASH_TAB = 3756
 }

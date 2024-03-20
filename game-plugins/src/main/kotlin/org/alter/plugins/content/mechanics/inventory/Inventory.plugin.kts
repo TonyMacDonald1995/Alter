@@ -32,6 +32,10 @@ on_button(InterfaceDestination.INVENTORY.interfaceId, 0) {
                     }
             }
             2 -> {
+                if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 405) {
+                    player.queue { messageBox("You'll be told how to equip items later.") }
+                    return@on_button
+                }
                 val result = EquipAction.equip(player, item, slot)
                 if (result == EquipAction.Result.UNHANDLED && world.devContext.debugItemActions) {
                     player.message("Unhandled item action: [item=${item.id}, slot=${slot}, option=$option]")

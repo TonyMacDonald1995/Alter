@@ -42,7 +42,8 @@ on_login {
         )
         player.openDefaultInterfaces()
         setVarbit(Varbit.COMBAT_LEVEL_VARBIT, combatLevel)
-        setVarbit(Varbit.CHATBOX_UNLOCKED, 1)
+        //TODO
+        //setVarbit(Varbit.CHATBOX_UNLOCKED, 1)
         runClientScript(5840)
         if (getVarp(Varp.PLAYER_HAS_DISPLAY_NAME) == 0 && displayname.isNotBlank()) {
             syncVarp(Varp.PLAYER_HAS_DISPLAY_NAME)
@@ -77,6 +78,8 @@ on_login {
             if (pane == InterfaceDestination.XP_COUNTER && player.getVarbit(Varbit.XP_DROPS_VISIBLE_VARBIT) == 0) {
                 return@forEach
             } else if (pane == InterfaceDestination.MINI_MAP && player.getVarbit(Varbit.HIDE_DATA_ORBS_VARBIT) == 1) {
+                return@forEach
+            } else if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) != 1000 && TutorialIsland.HIDDEN_INTERFACES.contains(pane)) {
                 return@forEach
             } else if (pane == InterfaceDestination.QUEST_ROOT) {
                 when (player.getVarbit(Varbit.PLAYER_SUMMARY_FOCUS_TAB)) {
@@ -138,3 +141,13 @@ on_button(245, 20) {
     player.openInterface(interfaceId = 626, dest = InterfaceDestination.MAIN_SCREEN)
 }
 
+on_component_item_swap(interfaceId = 149, component = 0) {
+    val srcSlot = player.attr[INTERACTING_ITEM_SLOT]!!
+    val dstSlot = player.attr[OTHER_ITEM_SLOT_ATTR]!!
+    val container = player.inventory
+    if (srcSlot in 0 until container.capacity && dstSlot in 0 until container.capacity) {
+        container.swap(srcSlot, dstSlot)
+    } else {
+        container.dirty = true
+    }
+}

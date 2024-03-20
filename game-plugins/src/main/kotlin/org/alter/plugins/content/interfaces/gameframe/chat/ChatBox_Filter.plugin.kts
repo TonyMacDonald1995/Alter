@@ -11,7 +11,8 @@ val TRADE_BUTTON_COMPONENT = 27
 val REPORT_BUG_BUTTON_COMPONENT = 31
 
 on_login {
-    player.setVarbit(Varbit.CHATBOX_UNLOCKED, 1)
+    //TODO
+    //player.setVarbit(Varbit.CHATBOX_UNLOCKED, 1)
 }
 
 on_button(PARENT_CHAT_BOX_INTERFACE, GAME_BUTTON_COMPONENT) {

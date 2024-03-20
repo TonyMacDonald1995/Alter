@@ -33,7 +33,6 @@ on_button(APPEARANCE_INTERFACE_ID, 66) {
  */
 on_button(APPEARANCE_INTERFACE_ID, 68) {
     player.attr[APPEARANCE_SET_ATTR] = true
-    player.unlock()
     player.closeInterface(APPEARANCE_INTERFACE_ID)
 }
 

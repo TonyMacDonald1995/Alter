@@ -91,6 +91,11 @@ open class Player(world: World) : Pawn(world) {
 
     val inventory = ItemContainer(world.definitions, INVENTORY_KEY)
 
+    /**
+     * Boolean whether the player can drop items
+     */
+    var canDropItems: Boolean = true
+
     val equipment = ItemContainer(world.definitions, EQUIPMENT_KEY)
 
     val bank = ItemContainer(world.definitions, BANK_KEY)

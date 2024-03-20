@@ -430,6 +430,8 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
         }
     }
 
+    fun on_return_value(logic: (Plugin).() -> Unit) = r.bindReturnValue(logic)
+
 
     /**
      * Invoke [logic] when [key] reaches a time value of 0.

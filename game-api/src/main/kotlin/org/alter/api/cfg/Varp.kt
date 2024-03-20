@@ -568,5 +568,6 @@ object Varp {
     const val INSTANCE_START_POSITION = 14998
     const val BASE_HIDDEN_VARP1 = 14999
     const val PLAYER_HAS_DISPLAY_NAME = 1055
-
+    const val TUTORIAL_ISLAND_PROGRESSION = 281
+    const val TUTORIAL_ISLAND_PROGRESS_BAR = 406
 }

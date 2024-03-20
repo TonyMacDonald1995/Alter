@@ -61,6 +61,7 @@ class MessageEncoderSet {
         put(MidiJingleEncoder(), MidiJingleMessage::class.java)
         put(OnDialogAbortEncoder(), TriggerOnDialogAbortMessage::class.java)
         put(UpdateRebootTimerEncoder(), UpdateRebootTimerMessage::class.java)
+        put(HintArrowEncoder(), HintArrowMessage::class.java)
         put(MapAnimEncoder(), MapAnimMessage::class.java)
         put(IfSetModelEncoder(), IfSetModelMessage::class.java)
         put(CamShakeEncoder(), CamShakeMessage::class.java)

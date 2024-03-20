@@ -252,6 +252,20 @@ server-packets:
         type: SHORT
         trans: ADD
 
+  - message: org.alter.game.message.impl.HintArrowMessage
+    type: FIXED
+    opcode: 47
+    structure:
+      - name: arrow_type
+        type: BYTE
+      - name: index_or_x
+        type: SHORT
+      - name: arrow_y
+        type: SHORT
+      - name: offset_z
+        sign: UNSIGNED
+        type: BYTE
+
 
   - message: org.alter.game.message.impl.UpdateRebootTimerMessage
     type: FIXED
@@ -1542,7 +1556,6 @@ client-packets:
   - message: org.alter.game.message.impl.ResumePNameDialogMessage
     type: VARIABLE_BYTE
     opcode: 29
-    ignore: true
     structure:
       - name: name
         type: BYTES

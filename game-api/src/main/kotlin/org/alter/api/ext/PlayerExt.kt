@@ -150,6 +150,10 @@ fun Player.setComponentAnim(interfaceId: Int, component: Int, anim: Int) {
     write(IfSetAnimMessage(hash = ((interfaceId shl 16) or component), anim = anim))
 }
 
+fun Player.sendHintArrow(arrowType: Int, indexOrX: Int, arrowY: Int, offsetZ: Int) {
+    write(HintArrowMessage(arrowType = arrowType, indexOrX = indexOrX, arrowY = arrowY, offsetZ = offsetZ))
+}
+
 /**
  * Use this method to open an interface id on top of an [InterfaceDestination]. This
  * method should always be preferred over
