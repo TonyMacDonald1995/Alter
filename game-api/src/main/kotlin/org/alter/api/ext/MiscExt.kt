@@ -26,11 +26,12 @@ fun String.parseAmount(): Long = when {
     else -> substring(0, length).toLong()
 }
 
-fun Int.interpolate(minChance: Int, maxChance: Int, minLvl: Int, maxLvl: Int): Int =
-        minChance + (maxChance - minChance) * (this - minLvl) / (maxLvl - minLvl)
+private fun Int.interpolate(minChance: Int, maxChance: Int): Int =
+    1 + (((minChance * (99 - this)) / 98) + ((maxChance * (this - 1)) / 98))
+        //minChance + (maxChance - minChance) * (this - minLvl) / (maxLvl - minLvl)
 
-fun Int.interpolate(minChance: Int, maxChance: Int, minLvl: Int, maxLvl: Int, cap: Int): Boolean =
-        RANDOM.nextInt(cap) <= interpolate(minChance, maxChance, minLvl, maxLvl)
+fun Int.interpolateCheck(minChance: Int, maxChance: Int): Boolean =
+        RANDOM.nextInt(256) <= interpolate(minChance, maxChance)
 
 /**
  * Get time left from a [TimerKey], in minutes.

@@ -1,22 +1,26 @@
 package org.alter.plugins.content.skills.woodcutting
 
+import org.alter.api.Skills
+import org.alter.api.cfg.Items
+import org.alter.api.cfg.Sound
+import org.alter.api.cfg.Varp
+import org.alter.api.ext.*
 import org.alter.game.fs.def.ItemDef
 import org.alter.game.model.attr.AttributeKey
 import org.alter.game.model.entity.DynamicObject
 import org.alter.game.model.entity.GameObject
 import org.alter.game.model.entity.Player
 import org.alter.game.model.queue.QueueTask
-import org.alter.api.Skills
-import org.alter.api.cfg.Items
-
-import org.alter.api.ext.*
+import org.alter.plugins.content.area.tutorial_island.events.ChopTreeEvent
+import org.alter.plugins.content.area.tutorial_island.events.TreeCutDownEvent
+import org.alter.plugins.content.area.tutorial_island.staticDialog
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
 object Woodcutting {
 
-    val infernalAxe = AttributeKey<Int>("Infernal Axe Charges")
+    private val infernalAxe = AttributeKey<Int>("Infernal Axe Charges")
 
     data class Tree(val type: TreeType, val obj: Int, val trunk: Int)
 
@@ -30,7 +34,11 @@ object Woodcutting {
         val logName = p.world.definitions.get(ItemDef::class.java, tree.log).name
         val axe = AxeType.values.firstOrNull { p.getSkills().getBaseLevel(Skills.WOODCUTTING) >= it.level && (p.equipment.contains(it.item) || p.inventory.contains(it.item)) }!!
 
-        p.filterableMessage("You swing your axe at the tree.")
+        if (it.player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) >= 1000) {
+            p.filterableMessage("You swing your axe at the tree.")
+        } else {
+            p.triggerEvent(ChopTreeEvent)
+        }
         while (true) {
             p.animate(axe.animation)
             it.wait(2)
@@ -41,9 +49,21 @@ object Woodcutting {
             }
 
             val level = p.getSkills().getCurrentLevel(Skills.WOODCUTTING)
-            if (level.interpolate(minChance = 60, maxChance = 190, minLvl = 1, maxLvl = 99, cap = 255)) {
-                p.filterableMessage("You get some ${logName.pluralSuffix(2)}.")
-                p.playSound(3600)
+            //TODO Rework Woodcutting
+            if (level.interpolateCheck(minChance = 60, maxChance = 190)) {
+
+                if(p.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 1000) {
+                    p.queue {
+                        itemMessageBox(message = "You manage to cut some logs.", item = Items.LOGS_2511, amountOrZoom = 400)
+                    }
+                    p.triggerEvent(TreeCutDownEvent)
+                }
+
+                if(p.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) >= 1000) {
+                    p.filterableMessage("You get some ${logName.pluralSuffix(2)}.")
+                }
+
+                //p.playSound(3600)
                 p.inventory.add(tree.log)
                 p.addXp(Skills.WOODCUTTING, tree.xp)
 
@@ -54,10 +74,11 @@ object Woodcutting {
                         val world = p.world
                         world.queue {
                             val trunk = DynamicObject(obj, trunkId)
-                            world.remove(obj)
+                            //world.remove(obj)
                             world.spawn(trunk)
+                            p.playSound(Sound.TREE_FALL)
                             wait(tree.respawnTime.random())
-                            world.remove(trunk)
+                            //world.remove(trunk)
                             world.spawn(DynamicObject(obj))
                         }
                     }
@@ -73,6 +94,16 @@ object Woodcutting {
             return false
         }
 
+        if (p.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 70) {
+            p.queue { messageBox("You cannot cut down this tree yet. You must progress further in the tutorial.") }
+            return false
+        }
+
+        if (p.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) >= 120) {
+            p.queue { messageBox("Perhaps you've done enough woodcutting now.") }
+            return false
+        }
+
         val axe = AxeType.values.firstOrNull { p.getSkills().getBaseLevel(Skills.WOODCUTTING) >= it.level && (p.equipment.contains(it.item) || p.inventory.contains(it.item)) }
         if (axe == null) {
             p.message("You need an axe to chop down this tree.")
@@ -81,7 +112,11 @@ object Woodcutting {
         }
 
         if (p.getSkills().getBaseLevel(Skills.WOODCUTTING) < tree.level) {
-            p.message("You need a Woodcutting level of ${tree.level} to chop down this tree.")
+            if (p.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 1000) {
+                p.queue { messageBox("You won't be able to chop oak trees until you have a Woodcutting level of 15. You'll advance to higher Woodcutting levels by chopping down normal trees. At higher Woodcutting levels you will find even more trees you can cut.", lineSpacing = 21) }
+            } else {
+                p.message("You need a Woodcutting level of ${tree.level} to chop down this tree.")
+            }
             return false
         }
 
@@ -108,11 +143,11 @@ object Woodcutting {
             player.addXp(Skills.WOODCUTTING, 200.0)
         } else if (player.getSkills().getBaseLevel(Skills.FIREMAKING) < 85 || player.getSkills().getBaseLevel(Skills.WOODCUTTING) < 61 &&
             player.getSkills().getBaseLevel(Skills.FIREMAKING) >= 85 || player.getSkills().getBaseLevel(Skills.WOODCUTTING) >= 61) {
-            player.message("You need 61 woodcrafing and 85 firemaking to make this")
+            player.message("You need 61 Woodcutting and 85 Firemaking to make this")
         }
     }
 
     fun checkCharges(p: Player) {
-        p.message("Your infernal axe currently has ${p.attr.get(infernalAxe)} charges left.")
+        p.message("Your infernal axe currently has ${p.attr[infernalAxe]} charges left.")
     }
 }

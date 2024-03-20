@@ -545,6 +545,8 @@ open class Player(world: World) : Pawn(world) {
      */
     val isOnline: Boolean get() = index > 0
 
+    var miningAccumulator: Double = 0.0
+
     /**
      * Default method to handle any incoming [Message]s that won't be
      * handled unless the [Player] is controlled by a [Client] user.

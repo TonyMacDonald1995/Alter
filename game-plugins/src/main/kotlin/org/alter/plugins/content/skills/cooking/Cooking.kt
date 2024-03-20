@@ -1,37 +1,37 @@
 package org.alter.plugins.content.skills.cooking
 
+import org.alter.api.Skills
+import org.alter.api.cfg.Varp
+import org.alter.api.ext.*
 import org.alter.game.fs.DefinitionSet
 import org.alter.game.fs.def.ItemDef
 import org.alter.game.model.entity.Player
 import org.alter.game.model.queue.QueueTask
-import org.alter.api.Skills
-import org.alter.api.ext.*
-/*import org.alter.plugins.content.modules.tutorialisland.TutorialIsland
-import org.alter.plugins.content.modules.tutorialisland.events.CookedBreadEvent
-import org.alter.plugins.content.modules.tutorialisland.events.CookedShrimpEvent
-import org.alter.plugins.content.modules.tutorialisland.events.CreateBreadDoughEvent*/
+import org.alter.plugins.content.area.tutorial_island.events.CookedBreadEvent
+import org.alter.plugins.content.area.tutorial_island.events.CookedShrimpEvent
+import org.alter.plugins.content.area.tutorial_island.events.CreateBreadDoughEvent
 import org.alter.plugins.content.skills.cooking.data.CookingFood
 import org.alter.plugins.content.skills.cooking.data.CookingIngredient
 import org.alter.plugins.content.skills.cooking.data.CookingObj
 
 class Cooking(private val defs: DefinitionSet) {
 
-    val foodNames = CookingFood.values.associate { it.raw_item to defs.get(ItemDef::class.java, it.raw_item).name.lowercase() }
-    val cookedFoodNames = CookingFood.values.associate { it.cooked_item to defs.get(ItemDef::class.java, it.cooked_item).name.lowercase() }
+    val foodNames = CookingFood.values.associate { it.rawItem to defs.get(ItemDef::class.java, it.rawItem).name.lowercase() }
+    val cookedFoodNames = CookingFood.values.associate { it.cookedItem to defs.get(ItemDef::class.java, it.cookedItem).name.lowercase() }
 
     val ingredientNames = CookingIngredient.values.associate { it.result to defs.get(ItemDef::class.java, it.result).name.lowercase() }
 
     suspend fun cook(task: QueueTask, food: CookingFood, amount: Int, obj: CookingObj, forceBurn: Boolean = false) {
         val player = task.player
 
-        val name = foodNames[food.raw_item] ?: return
-        val burnName = cookedFoodNames[food.cooked_item] ?: return
+        val name = foodNames[food.rawItem] ?: return
+        val burnName = cookedFoodNames[food.cookedItem] ?: return
         var cookable: Int
 
         if(forceBurn) {
-            cookable = food.cooked_item
+            cookable = food.cookedItem
         } else {
-            cookable = food.raw_item
+            cookable = food.rawItem
         }
 
         repeat(amount) {
@@ -45,24 +45,23 @@ class Cooking(private val defs: DefinitionSet) {
 
             player.inventory.remove(cookable)
             val level = player.getSkills().getCurrentLevel(Skills.COOKING)
-            if(forceBurn) {
-                player.inventory.add(food.burnt_item)
+            if (forceBurn) {
+                player.inventory.add(food.burntItem)
                 player.filterableMessage("You deliberately burn some ${burnName}.")
+            } else if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) == 90 || player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) == 160) {
+                player.inventory.add(food.cookedItem, 1)
+                player.addXp(Skills.COOKING, food.xp)
+                if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) == 90)
+                    player.triggerEvent(CookedShrimpEvent)
+                else if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) == 160)
+                    player.triggerEvent(CookedBreadEvent)
             }
-            else if(level.interpolate(minChance = 60, maxChance = 190, minLvl = food.minLevel, maxLvl = food.maxLevel, cap = 255)) /*|| player.getVarp(TutorialIsland.COMPLETION_VARP) == 90 || player.getVarp(TutorialIsland.COMPLETION_VARP) == 160)*/ {
-                player.inventory.add(food.cooked_item, 1)
+            else if (level.interpolateCheck(minChance = food.lowChance, maxChance = food.highChance)) /*|| player.getVarp(TutorialIsland.COMPLETION_VARP) == 90 || player.getVarp(TutorialIsland.COMPLETION_VARP) == 160)*/ {
+                player.inventory.add(food.cookedItem, 1)
                 player.addXp(Skills.COOKING, food.xp)
                 player.filterableMessage("You cook some ${name}.")
-                /*if(player.getVarp(TutorialIsland.COMPLETION_VARP) == 90) {
-                    player.world.plugins.executeEvent(player, CookedShrimpEvent)
-                } else if(player.getVarp(TutorialIsland.COMPLETION_VARP) == 160) {
-                  player.world.plugins.executeEvent(player, CookedBreadEvent)
-                } else {
-                    player.filterableMessage("You cook some ${name}.")
-                }*/
-
             } else {
-                player.inventory.add(food.burnt_item, 1)
+                player.inventory.add(food.burntItem, 1)
                 player.filterableMessage("You accidentally burn some ${name}.")
             }
             task.wait(5)
@@ -74,11 +73,11 @@ class Cooking(private val defs: DefinitionSet) {
         var name: String
         var cookable: Int
         if(forceBurn) {
-            name = cookedFoodNames[food.cooked_item] ?: return false
-            cookable = food.cooked_item
+            name = cookedFoodNames[food.cookedItem] ?: return false
+            cookable = food.cookedItem
         } else {
-            name = foodNames[food.raw_item] ?: return false
-            cookable = food.raw_item
+            name = foodNames[food.rawItem] ?: return false
+            cookable = food.rawItem
         }
 
         if(!player.inventory.contains(cookable)) {
@@ -123,11 +122,11 @@ class Cooking(private val defs: DefinitionSet) {
                 player.addXp(Skills.COOKING, ingredient.xp)
             }
 
-            /*if(player.getVarp(TutorialIsland.COMPLETION_VARP) == 150) {
+            if(player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) == 150) {
                 player.world.plugins.executeEvent(player, CreateBreadDoughEvent)
             } else {
                 player.filterableMessage("You combine the ingredients to make $name.")
-            }*/
+            }
             player.filterableMessage("You combine the ingredients to make $name.")
             task.wait(cycles = 3)
         }
@@ -137,10 +136,10 @@ class Cooking(private val defs: DefinitionSet) {
     private fun canCombine(player: Player, ingredient: CookingIngredient): Boolean {
         val name = ingredientNames[ingredient.result] ?: return false
         if(!player.inventory.contains(ingredient.item1) || !player.inventory.contains(ingredient.item2)) {
-            player.filterableMessage("You are missing the required ingredients to make $name.")
-            /*if(player.getVarp(TutorialIsland.COMPLETION_VARP) >= 1000) {
+            println("Inv doesn't contain ${ingredient.item1} or ${ingredient.item2}")
+            if(player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) >= 1000) {
                 player.filterableMessage("You are missing the required ingredients to make $name.")
-            }*/
+            }
             return false
         }
 

@@ -4,8 +4,8 @@ package org.alter.plugins.content.skills.woodcutting
  * @author Tom <rspsmods@gmail.com>
  */
 enum class TreeType(val level: Int, val xp: Double, val log: Int, val depleteChance: Int, val respawnTime: IntRange) {
-    TREE(level = 1, xp = 25.0, log = 1511, depleteChance = 1, respawnTime = 15..25),
-    ACHEY(level = 1, xp = 25.0, log = 2862, depleteChance = 1, respawnTime = 15..25),
+    TREE(level = 1, xp = 25.0, log = 1511, depleteChance = 0, respawnTime = 15..25),
+    ACHEY(level = 1, xp = 25.0, log = 2862, depleteChance = 0, respawnTime = 15..25),
     OAK(level = 15, xp = 37.5, log = 1521, depleteChance = 2, respawnTime = 20..40),
     WILLOW(level = 30, xp = 67.5, log = 1519, depleteChance = 8, respawnTime = 15..20),
     TEAK(level = 35, xp = 85.0, log = 6333, depleteChance = 11, respawnTime = 22..55),

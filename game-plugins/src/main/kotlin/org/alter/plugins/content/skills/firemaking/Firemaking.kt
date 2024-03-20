@@ -1,5 +1,11 @@
 package org.alter.plugins.content.skills.firemaking
 
+import org.alter.api.Skills
+import org.alter.api.cfg.Items
+import org.alter.api.cfg.Objs
+import org.alter.api.cfg.Sound
+import org.alter.api.cfg.Varp
+import org.alter.api.ext.*
 import org.alter.game.model.Direction
 import org.alter.game.model.MovementQueue
 import org.alter.game.model.Tile
@@ -7,13 +13,8 @@ import org.alter.game.model.entity.DynamicObject
 import org.alter.game.model.entity.GroundItem
 import org.alter.game.model.entity.Player
 import org.alter.game.model.queue.QueueTask
-import org.alter.api.Skills
-import org.alter.api.cfg.Items
-
-import org.alter.api.cfg.Objs
-import org.alter.api.ext.filterableMessage
-import org.alter.api.ext.interpolate
-import org.alter.api.ext.player
+import org.alter.plugins.content.area.tutorial_island.events.FireStartedEvent
+import org.alter.plugins.content.area.tutorial_island.staticDialog
 
 object Firemaking {
 
@@ -28,7 +29,11 @@ object Firemaking {
         player.inventory.remove(log.log)
         val logDrop = GroundItem(log.log, 1, player.tile, player)
         player.world.spawn(logDrop)
-        player.filterableMessage("You attempt to light the logs.")
+        if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) == 80) {
+            player.staticDialog("<col=0000ff>Please wait</col><br>Your character is now attempting to light a fire. This should only take a few seconds.")
+        } else {
+            player.filterableMessage("You attempt to light the logs.")
+        }
 
         while(true) {
             player.animate(733)
@@ -40,7 +45,14 @@ object Firemaking {
             }
 
             val level = player.getSkills().getCurrentLevel(Skills.FIREMAKING)
-            if(level.interpolate(minChance = 60, maxChance = 120, minLvl = 1, maxLvl = 99, cap = 255)) {
+            if(level.interpolateCheck(minChance = 64, maxChance = 512)) {
+
+                if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) >= 1000) {
+                    player.filterableMessage("The fire catches and the logs begin to burn.")
+                } else if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) == 80) {
+                    player.world.plugins.executeEvent(player, FireStartedEvent)
+                }
+
                 player.addXp(Skills.FIREMAKING, log.xp)
 
                 val world = player.world
@@ -50,19 +62,20 @@ object Firemaking {
                     val randBurnTicks = (150..300).random()
                     world.remove(logDrop)
                     world.spawn(fire)
+                    player.playSound(Sound.FIRE_LIT)
                     wait(randBurnTicks)
                     world.remove(fire)
                     val ashes = GroundItem(Items.ASHES, 1, fire.tile)
                     world.spawn(ashes)
 
-                    // despawn after 2 min
+                    // De-spawn after 2 min
                     wait(200)
                     world.remove(ashes)
                 }
 
                 player.animate(-1)
 
-                var targetWalkTile: Tile = Tile(player.tile.x-1, player.tile.z, player.tile.height)
+                var targetWalkTile = Tile(player.tile.x-1, player.tile.z, player.tile.height)
                 if(player.world.collision.isBlocked(targetWalkTile, Direction.WEST, false)) {
                     targetWalkTile = Tile(player.tile.x+1, player.tile.z, player.tile.height)
                     if(player.world.collision.isBlocked(targetWalkTile, Direction.EAST, false)) {
@@ -81,7 +94,7 @@ object Firemaking {
 
     private fun canBurn(player: Player, log: LogData): Boolean {
         if(player.getSkills().getCurrentLevel(Skills.FIREMAKING) < log.level) {
-            player.filterableMessage("You need a Firemaking level of atleast ${log.level} to light this.")
+            player.filterableMessage("You need a Firemaking level of at least ${log.level} to light this.")
             return false
         }
 

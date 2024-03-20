@@ -57,6 +57,7 @@ class ObjectDef(override val id: Int) : Definition(id) {
     var anInt3426: Int = 0
     var anInt3427: Int = 0
     var anIntArray3428: Array<Int> = emptyArray<Int>()
+    var depleted: Int = -1
 
 
     fun getRotatedWidth(obj: GameObject): Int = when {

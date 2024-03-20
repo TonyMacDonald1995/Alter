@@ -1,6 +1,5 @@
 package org.alter.plugins.content.skills.cooking
 
-import org.alter.game.plugin.KotlinPlugin
 import org.alter.plugins.content.skills.cooking.data.CookingFood
 import org.alter.plugins.content.skills.cooking.data.CookingIngredient
 import org.alter.plugins.content.skills.cooking.data.CookingObj
@@ -12,8 +11,8 @@ val objs = CookingObj.values
 val ingredients = CookingIngredient.values
 
 val foodDefs = CookingFood.definitions
-val cookedFoodDefs = CookingFood.values.associate { it.cooked_item to it }
-val burntFoodDefs = CookingFood.values.associate { it.burnt_item to it }
+val cookedFoodDefs = CookingFood.values.associate { it.cookedItem to it }
+val burntFoodDefs = CookingFood.values.associate { it.burntItem to it }
 
 val ingredientDefs = CookingIngredient.values.associate { it.result to it }
 
@@ -59,6 +58,14 @@ objs.forEach { obj ->
     if(obj.isRange) {
         on_obj_option(obj.objId, "cook") {
             val cookableFoods = findCookableFoods(player)
+            if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 1000 && cookableFoods.isEmpty()) {
+                player.queue { messageBox("You haven't got anything suitable for cooking! The master chef can help you out with that.") }
+                return@on_obj_option
+            } else if (cookableFoods.size == 1) {
+                if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 1000)
+                    player.queue { messageBox("<col=0000ff>Please wait</col><br>Your character is now attempting to bake some bread. This will only take a few seconds.") }
+                cookFoodOnRange(player, cookableFoods[0], 1, obj)
+            }
             player.queue(TaskPriority.WEAK) { cookingMessageBox(*cookableFoods, title = "What would you like to cook?", obj = obj, logic = ::cookFoodOnRange)}
         }
         /*on_obj_option(114, option = "cook") {
@@ -74,24 +81,27 @@ objs.forEach { obj ->
     }
 
     foods.forEach { food ->
-        on_item_on_obj(obj.objId, food.raw_item) {
-            val foods = intArrayOf(food.raw_item)
-            if(player.inventory.getItemCount(food.raw_item) == 1) {
-                cookFoodOverFire(player, food.raw_item, 1, obj)
+        on_item_on_obj(obj.objId, food.rawItem) {
+            val foods = intArrayOf(food.rawItem)
+            if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 1000) {
+                cookFoodOverFire(player, food.rawItem, 1, obj)
+            }
+            if(player.inventory.getItemCount(food.rawItem) == 1) {
+                cookFoodOverFire(player, food.rawItem, 1, obj)
             } else {
                 player.queue(TaskPriority.WEAK) { cookingMessageBox(*foods, title = "How many would you like to cook?", obj = obj, logic = ::cookFoodOverFire) }
             }
         }
 
-        val max = Math.max(obj.objId, food.cooked_item)
-        val min = Math.min(obj.objId, food.cooked_item)
+        val max = Math.max(obj.objId, food.cookedItem)
+        val min = Math.min(obj.objId, food.cookedItem)
         val hash = (max shl 16) or min
 
         if(!objListenHashes.containsKey(hash)) {
-            on_item_on_obj(obj.objId, food.cooked_item) {
-                val foods = intArrayOf(food.cooked_item)
-                if(player.inventory.getItemCount(food.cooked_item) == 1) {
-                    cookFoodOverFire(player, food.cooked_item, 1, obj)
+            on_item_on_obj(obj.objId, food.cookedItem) {
+                val foods = intArrayOf(food.cookedItem)
+                if(player.inventory.getItemCount(food.cookedItem) == 1) {
+                    cookFoodOverFire(player, food.cookedItem, 1, obj)
                 } else {
                     player.queue(TaskPriority.WEAK) { cookingMessageBox(*foods, title = "How many would you like to cook?", obj = obj, logic = ::cookFoodOverFire) }
                 }
@@ -122,8 +132,8 @@ fun findCookableFoods(player: Player): IntArray {
         val invItem = player.inventory.get(i)
         if(invItem != null) {
             if(cookedFoodDefs[invItem.id] != null) {
-                if(!foods.contains(cookedFoodDefs[invItem.id]!!.burnt_item)) {
-                    foods.add(cookedFoodDefs[invItem.id]!!.burnt_item)
+                if(!foods.contains(cookedFoodDefs[invItem.id]!!.burntItem)) {
+                    foods.add(cookedFoodDefs[invItem.id]!!.burntItem)
                 }
             }
         }
@@ -133,8 +143,8 @@ fun findCookableFoods(player: Player): IntArray {
         val invItem = player.inventory.get(i)
         if (invItem != null) {
             if (foodDefs[invItem.id] != null) {
-                if (!foods.contains(foodDefs[invItem.id]!!.cooked_item)) {
-                    foods.add(foodDefs[invItem.id]!!.cooked_item)
+                if (!foods.contains(foodDefs[invItem.id]!!.cookedItem)) {
+                    foods.add(foodDefs[invItem.id]!!.cookedItem)
                 }
             }
         }

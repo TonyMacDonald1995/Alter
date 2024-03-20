@@ -21,7 +21,7 @@ private const val VERY_RARE = 1
  * @property stunTicks the amount of time that the npc stuns the player for
  */
 enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLevel: Int, val npcName: String? = null,
-                         val rewards: Array<WeightItem>, val damage: IntRange, val stunTicks: Int) {
+                         val rewards: Array<WeightItem>, val damage: IntRange, val stunTicks: Int, val lowChance: Int, val highChance: Int) {
     MAN_WOMAN(
             npcIds = intArrayOf(
                     //Man NPC npcIds
@@ -40,7 +40,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.COINS_995, amount = 3, weight = ALWAYS)
             ),
             damage = 1..1,
-            stunTicks = 8
+            stunTicks = 8,
+            lowChance = 180,
+            highChance = 240
     ),
     FARMER(
             npcIds = intArrayOf(
@@ -53,7 +55,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.POTATO_SEED, amount = 1, weight = RARE)
             ),
             damage = 2..2,
-            stunTicks = 8
+            stunTicks = 8,
+            lowChance = 150,
+            highChance = 240
     ),
     HAM_FEMALE(
             npcIds = intArrayOf(Npcs.HAM_MEMBER_2541),
@@ -101,7 +105,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.RAW_CHICKEN, amount = 1, weight = UNCOMMON)
             ),
             damage = 1..3,
-            stunTicks = 6
+            stunTicks = 6,
+            lowChance = 135,
+            highChance = 240
     ),
     HAM_MALE(
             npcIds = intArrayOf(Npcs.HAM_MEMBER),
@@ -149,7 +155,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.RAW_CHICKEN, amount = 1, weight = UNCOMMON)
             ),
             damage = 1..3,
-            stunTicks = 6
+            stunTicks = 6,
+            lowChance = 135,
+            highChance = 240
     ),
     //ALKHARID_WARRIOR(
     //        npcIds = intArrayOf(
@@ -178,7 +186,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.IRON_DAGGERP, amount = 1, weight = RARE)
             ),
             damage = 2..2,
-            stunTicks = 8
+            stunTicks = 8,
+            lowChance = 74,
+            highChance = 240
     ),
     CAVE_GOBLIN(
             npcIds = intArrayOf(
@@ -206,7 +216,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.UNLIT_TORCH, amount = 1, weight = RARE)
             ),
             damage = 1..1,
-            stunTicks = 8
+            stunTicks = 8,
+            lowChance = 74,     //TODO This is best guess based on Rogue use runescape.wiki crowd-source info where available
+            highChance = 740    //TODO This is best guess based on Rogue use runescape.wiki crowd-source info where available
     ),
     MASTER_FARMER(
             npcIds = intArrayOf(
@@ -259,7 +271,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.CACTUS_SEED, amount = 1, weight = VERY_RARE)
             ),
             damage = 2..2,
-            stunTicks = 8
+            stunTicks = 8,
+            lowChance = 90,
+            highChance = 240
     ),
     GUARD(
             npcIds = intArrayOf(
@@ -271,7 +285,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.COINS_995, amount = 30, weight = ALWAYS)
             ),
             damage = 2..2,
-            stunTicks = 8
+            stunTicks = 8,
+            lowChance = 50,
+            highChance = 240
     ),
     FREMENNIK_CITIZEN(
             npcIds = intArrayOf(
@@ -286,7 +302,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.COINS_995, amount = 30, weight = ALWAYS)
             ),
             damage = 2..2,
-            stunTicks = 8
+            stunTicks = 8,
+            lowChance = 15,     //TODO This is best guess based on Yanille Watchman use runescape.wiki crowd-source info where available
+            highChance = 160    //TODO This is best guess based on Yanille Watchman use runescape.wiki crowd-source info where available
     ),
     BEARDED_POLLNIVIAN_BANDIT(
             npcIds = intArrayOf(
@@ -298,7 +316,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.COINS_995, amount = 40, weight = ALWAYS)
             ),
             damage = 5..5,
-            stunTicks = 8
+            stunTicks = 8,
+            lowChance = 15,     //TODO This is best guess based on Yanille Watchman use runescape.wiki crowd-source info where available
+            highChance = 160    //TODO This is best guess based on Yanille Watchman use runescape.wiki crowd-source info where available
     ),
     DESERT_BANDIT(
             npcIds = intArrayOf(
@@ -313,7 +333,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
             ),
 
             damage = 3..3,
-            stunTicks = 8
+            stunTicks = 8,
+            lowChance = 50,
+            highChance = 240
     ),
     KNIGHT(
             npcIds = intArrayOf(
@@ -325,7 +347,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.COINS_995, amount = 50, weight = ALWAYS)
             ),
             damage = 3..3,
-            stunTicks = 8
+            stunTicks = 8,
+            lowChance = 50,
+            highChance = 240
     ),
     POLLNIVIAN_BANDIT(
             npcIds = intArrayOf(
@@ -337,7 +361,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.COINS_995, amount = 50, weight = ALWAYS)
             ),
             damage = 5..5,
-            stunTicks = 8
+            stunTicks = 8,
+            lowChance = 50,     //TODO This is best guess based on Knight use runescape.wiki crowd-source info where available
+            highChance = 240    //TODO This is best guess based on Knight use runescape.wiki crowd-source info where available
     ),
     YANILLE_WATCHMAN(
             npcIds = intArrayOf(
@@ -350,7 +376,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.BREAD, amount = 1, weight = COMMON)
             ),
             damage = 3..3,
-            stunTicks = 8
+            stunTicks = 8,
+            lowChance = 15,
+            highChance = 160
     ),
     MENAPHITE_THUG(
             npcIds = intArrayOf(
@@ -362,7 +390,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.COINS_995, amount = 60, weight = ALWAYS)
             ),
             damage = 2..2,
-            stunTicks = 8
+            stunTicks = 8,
+            lowChance = 50,
+            highChance = 160
     ),
     PALADIN(
             npcIds = intArrayOf(
@@ -375,7 +405,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.CHAOS_RUNE, amount = 2, weight = COMMON)
             ),
             damage = 3..3,
-            stunTicks = 8
+            stunTicks = 8,
+            lowChance = 50,
+            highChance = 150
     ),
     GNOME(
             npcIds = intArrayOf(
@@ -394,7 +426,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.KING_WORM, amount = 1, weight = COMMON)
             ),
             damage = 1..1,
-            stunTicks = 8
+            stunTicks = 8,
+            lowChance = 8,
+            highChance = 120
     ),
     HERO(
             npcIds = intArrayOf(Npcs.HERO_3295),
@@ -410,7 +444,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.DIAMOND, amount = 1, weight = UNCOMMON)
             ),
             damage = 4..4,
-            stunTicks = 10
+            stunTicks = 10,
+            lowChance = 6,
+            highChance = 100
     ),
     ELF(
             npcIds = intArrayOf(
@@ -429,7 +465,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.DIAMOND, amount = 1, weight = UNCOMMON)
             ),
             damage = 5..5,
-            stunTicks = 10
+            stunTicks = 10,
+            lowChance = 6,
+            highChance = 100
     ),
     TZHAAR_HUR(
             npcIds = intArrayOf(
@@ -450,7 +488,9 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.UNCUT_DIAMOND, amount = 1, weight = COMMON)
             ),
             damage = 4..4,
-            stunTicks = 8
+            stunTicks = 8,
+            lowChance = -200,
+            highChance = 200
 
     );
 
