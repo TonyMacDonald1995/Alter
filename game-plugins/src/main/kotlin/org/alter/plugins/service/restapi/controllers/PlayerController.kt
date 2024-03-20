@@ -26,13 +26,13 @@ class PlayerController(req: Request, resp: Response, auth: Boolean) : Controller
 
         world.players.forEach { player ->
 
-            if(player.username == username) {
+            if(player.displayname == username) {
 
                 val pObj = JsonObject()
 
                 // Main Player Object
 
-                pObj.addProperty("username", player.username)
+                pObj.addProperty("username", player.displayname)
                 pObj.addProperty("privilege", player.privilege.id)
                 pObj.addProperty("gameMode", player.gameMode)
                 pObj.addProperty("combatLvl", player.combatLevel)

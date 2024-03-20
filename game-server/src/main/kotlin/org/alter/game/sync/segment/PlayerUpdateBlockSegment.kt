@@ -3,7 +3,6 @@ package org.alter.game.sync.segment
 import org.alter.game.fs.def.NpcDef
 import org.alter.game.model.ChatMessage
 import org.alter.game.model.Tile
-import org.alter.game.model.appearance.Gender
 import org.alter.game.model.entity.Player
 import org.alter.game.model.item.Item
 import org.alter.game.sync.SynchronizationSegment
@@ -229,7 +228,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                     }
                 }
 
-                appBuf.putString(other.username)
+                appBuf.putString(other.displayname)
                 appBuf.put(DataType.BYTE, other.combatLevel)
                 appBuf.put(DataType.SHORT, 0) // skillLevel
                 appBuf.put(DataType.BYTE, 0) // isHidden

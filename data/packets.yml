@@ -880,7 +880,7 @@ client-packets:
     opcode: 38
     structure:
       - name: input
-        type: BYTES
+        type: STRING
         sign: UNSIGNED
 
   - message: org.alter.game.message.impl.ClientCheatMessage

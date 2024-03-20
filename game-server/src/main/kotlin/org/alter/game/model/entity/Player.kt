@@ -44,7 +44,7 @@ open class Player(world: World) : Pawn(world) {
     /**
      * The name that was used when the player logged into the game.
      */
-    var username = ""
+    var displayname = ""
 
     /**
      * @see Privilege
@@ -582,7 +582,7 @@ open class Player(world: World) : Pawn(world) {
     }
 
     override fun toString(): String = MoreObjects.toStringHelper(this)
-            .add("name", username)
+            .add("name", displayname)
             .add("pid", index)
             .toString()
 

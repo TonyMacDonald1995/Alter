@@ -30,8 +30,8 @@ class Social {
         } else {
             friends.forEach {
                 val user = world.getPlayerForName(it)
-                if (user != null && !user.social.ignores.contains(player.username))
-                    player.write(UpdateFriendListMessage(0, user.username, "", 304, 0, 0))
+                if (user != null && !user.social.ignores.contains(player.displayname))
+                    player.write(UpdateFriendListMessage(0, user.displayname, "", 304, 0, 0))
                 else
                 /**
                  * @TODO
@@ -97,9 +97,9 @@ class Social {
         player.world.players.forEach {
             if (it == player)
                 return@forEach
-            if (it.social.ignores.contains(player.username))
+            if (it.social.ignores.contains(player.displayname))
                 return@forEach
-            if (it.social.friends.contains(player.username)) {
+            if (it.social.friends.contains(player.displayname)) {
                 it.social.pushFriends(it)
             }
         }
@@ -111,10 +111,10 @@ class Social {
         huffman.decompress(message, decompressed, length)
         val unpacked = String(decompressed, 0, length)
 
-        logger.info { "${player.username} is attempting to message: ${target.username} with message: $unpacked" }
+        logger.info { "${player.displayname} is attempting to message: ${target.displayname} with message: $unpacked" }
 
-        target.write(MessagePrivateReceiverMessage(player.username, 255, 0, player.privilege.icon, "Testing"))
-        player.write(MessagePrivateReceiverMessage(target.username, 255, -1, 0, "Testing"))
+        target.write(MessagePrivateReceiverMessage(player.displayname, 255, 0, player.privilege.icon, "Testing"))
+        player.write(MessagePrivateReceiverMessage(target.displayname, 255, -1, 0, "Testing"))
 
     }
     companion object {

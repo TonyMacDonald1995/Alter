@@ -33,7 +33,7 @@ class LoginWorker(private val boss: LoginService, private val verificationServic
                     val encodeRandom = IsaacRandom(IntArray(request.login.xteaKeys.size) { request.login.xteaKeys[it] + 50 })
 
                     world.getService(GameService::class.java)?.submitGameThreadJob {
-                        val interceptedLoginResult = verificationService.interceptLoginResult(world, client.uid, client.username, client.loginUsername)
+                        val interceptedLoginResult = verificationService.interceptLoginResult(world, client.uid, client.displayname, client.loginUsername)
                         val loginResult: LoginResultType = interceptedLoginResult ?: if (client.register()) {
                             LoginResultType.ACCEPTABLE
                         } else {
@@ -44,7 +44,7 @@ class LoginWorker(private val boss: LoginService, private val verificationServic
                             boss.successfulLogin(client, world, encodeRandom, decodeRandom)
                         } else {
                             request.login.channel.writeAndFlush(loginResult).addListener(ChannelFutureListener.CLOSE)
-                            logger.info("User '{}' login denied with code {}.", client.username, loginResult)
+                            logger.info { "${"User '{}' login denied with code {}."} ${client.displayname} $loginResult" }
                         }
                     }
                 } else {
@@ -55,7 +55,7 @@ class LoginWorker(private val boss: LoginService, private val verificationServic
                         else -> LoginResultType.COULD_NOT_COMPLETE_LOGIN
                     }
                     request.login.channel.writeAndFlush(errorCode).addListener(ChannelFutureListener.CLOSE)
-                    logger.info("User '{}' login denied with code {} and channel {}.", client.username, loadResult, client.channel)
+                    logger.info("User '{}' login denied with code {} and channel {}.", client.displayname, loadResult, client.channel)
                 }
             } catch (e: Exception) {
                 logger.error("Error when handling request from ${request.login.channel}.", e)

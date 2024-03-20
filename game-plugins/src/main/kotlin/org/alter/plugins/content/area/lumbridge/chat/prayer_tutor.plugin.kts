@@ -8,7 +8,7 @@ on_npc_option(Npcs.PRAYER_TUTOR, option = "talk-to") {
 
 suspend fun QueueTask.dialog() {
     chatPlayer("Good day, sister.")
-    chatNpc("Greetings, ${player.username}. Can I help you with anything,<br><br> today?")
+    chatNpc("Greetings, ${player.displayname}. Can I help you with anything,<br><br> today?")
     when (options("How can I train my prayer?", "What is prayer useful for?", "No, thank you.")) {
         1 -> how_to_train()
         2 -> prayer_useful()

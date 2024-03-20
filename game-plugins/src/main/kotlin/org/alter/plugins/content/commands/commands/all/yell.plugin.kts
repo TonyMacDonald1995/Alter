@@ -26,7 +26,7 @@ on_command("yell", description = "Yell to everyone") {
     }
 
     val args = player.getCommandArgs()
-    val name = player.username
+    val name = player.displayname
     val text = args[0]
     player.world.players.forEach {
         it.message("${color}[${rank}]${name}:${text}", ChatMessageType.ENGINE)

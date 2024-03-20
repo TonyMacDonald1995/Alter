@@ -82,7 +82,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
 
             client.loginUsername = data.username
             client.uid = PlayerUID(data.username)
-            client.username = data.displayName
+            client.displayname = data.displayName
             client.passwordHash = data.passwordHash
             client.tile = Tile(data.x, data.z, data.height)
             client.privilege = world.privileges.get(data.privilege) ?: Privilege.DEFAULT
@@ -139,7 +139,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
 
     override fun saveClientData(client: Client): Boolean {
         val data = JsonPlayerSaveData(passwordHash = client.passwordHash, username = client.loginUsername, previousXteas = client.currentXteaKeys,
-                displayName = client.username, x = client.tile.x, z = client.tile.z, height = client.tile.height,
+                displayName = client.displayname, x = client.tile.x, z = client.tile.z, height = client.tile.height,
                 privilege = client.privilege.id, runEnergy = client.runEnergy, displayMode = client.interfaces.displayMode.id,
                 appearance = client.getPersistentAppearance(), skills = client.getPersistentSkills(), itemContainers = client.getPersistentContainers(),
                 attributes = client.attr.toPersistentMap(), timers = client.timers.toPersistentTimers(),

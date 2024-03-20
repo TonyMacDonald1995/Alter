@@ -23,6 +23,8 @@ const val CHATBOX_CHILD = 559
  */
 const val APPEARANCE_INTERFACE_ID = 679
 
+const val DISPLAY_NAME_INTERFACE_ID = 558
+
 /**
  * The default action that will occur when interrupting or finishing a dialog.
  */
@@ -35,13 +37,6 @@ private val closeDialog: QueueTask.() -> Unit = {
  */
 private val closeInput: QueueTask.() -> Unit = {
     player.closeInputDialog()
-}
-
-/**
- * Invoked when the appearance input is interrupted.
- */
-private val closeAppearance: QueueTask.() -> Unit = {
-    player.closeInterface(APPEARANCE_INTERFACE_ID)
 }
 
 /**
@@ -146,7 +141,7 @@ suspend fun QueueTask.inputString(description: String = "Enter text"): String {
  * online.
  */
 suspend fun QueueTask.inputPlayer(description: String = "Enter name"): Player? {
-    player.runClientScript(109, description)
+    player.runClientScript(2572, description)
 
     terminateAction = closeInput
     waitReturnValue()
@@ -272,7 +267,7 @@ suspend fun QueueTask.chatNpc(message: String, npc: Int = -1, animation: Int = 5
 */
 
 suspend fun QueueTask.chatPlayer(message: String, animation: Int = 588, title: String? = null) {
-    val dialogTitle = title ?: player.username
+    val dialogTitle = title ?: player.displayname
 
     player.runClientScript(2379)
     player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 217)

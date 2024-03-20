@@ -31,7 +31,7 @@ class OpPlayer4Handler : MessageHandler<OpPlayer4Message> {
             return
         }
 
-        log(client, "Player option: name=%s, opt=%d", other.username, option)
+        log(client, "Player option: name=%s, opt=%d", other.displayname, option)
 
         client.closeInterfaceModal()
         client.interruptQueues()

@@ -48,7 +48,7 @@ fun Player.openShop(shop: String) {
         setInterfaceEvents(interfaceId = 300, component = 16, range = 0..s.items.size, setting = 1086)
         setInterfaceEvents(interfaceId = 301, component = 0, range = 0 until inventory.capacity, setting = 1086)
     } else {
-        World.logger.warn { "Player \"$username\" is unable to open shop \"$shop\" as it does not exist." }
+        World.logger.warn { "Player \"$displayname\" is unable to open shop \"$shop\" as it does not exist." }
     }
 }
 
@@ -63,7 +63,7 @@ fun Player.openShop(shopId: Int) {
         setInterfaceEvents(interfaceId = 300, component = 16, range = 0..s.items.size, setting = 1086)
         setInterfaceEvents(interfaceId = 301, component = 0, range = 0 until inventory.capacity, setting = 1086)
     } else {
-        World.logger.warn { "Player \"$username\" is unable to open shop \"$shopId\" as it does not exist." }
+        World.logger.warn { "Player \"$displayname\" is unable to open shop \"$shopId\" as it does not exist." }
     }
 }
 

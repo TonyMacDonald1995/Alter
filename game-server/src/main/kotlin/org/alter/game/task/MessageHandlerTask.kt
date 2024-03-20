@@ -20,7 +20,7 @@ class MessageHandlerTask : GameTask {
              * incoming messages.
              */
             val time = System.currentTimeMillis() - start
-            service.playerTimes.merge(p.username, time) { _, oldTime -> oldTime + time }
+            service.playerTimes.merge(p.displayname, time) { _, oldTime -> oldTime + time }
         }
     }
 }

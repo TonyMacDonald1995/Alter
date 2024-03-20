@@ -42,6 +42,10 @@ val NEW_ACCOUNT_ATTR = AttributeKey<Boolean>()
  */
 val FREE_BOND_CLAIMED_ATTR = AttributeKey<String>("bond_claimed")
 
+val DISPLAY_NAME_SET_ATTR = AttributeKey<Boolean>("displayname_set")
+
+val RETURN_VALUE_ATTR = AttributeKey<Any?>()
+
 /**
  * A flag which indicates if the player's appearance has been set by the player.
  * Opting for persistence and modifying on_login behavior this will allow OSRS-like
@@ -231,3 +235,9 @@ val LEVEL_UP_OLD_XP = AttributeKey<Double>()
 val CHANGE_LOGGING = AttributeKey<Boolean>()
 
 var TERMINAL_ARGS = AttributeKey<Array<String>>()
+
+/**
+ * Tutorial island started fishing boolean
+ */
+val TUTORIAL_STARTED_FISHING = AttributeKey<Boolean?>()
+val TUTORIAL_CATCH_FISH = AttributeKey<Boolean?>()

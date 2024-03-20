@@ -44,7 +44,7 @@ on_login {
         setVarbit(Varbit.COMBAT_LEVEL_VARBIT, combatLevel)
         setVarbit(Varbit.CHATBOX_UNLOCKED, 1)
         runClientScript(5840)
-        if (getVarp(Varp.PLAYER_HAS_DISPLAY_NAME) == 0 && username.isNotBlank()) {
+        if (getVarp(Varp.PLAYER_HAS_DISPLAY_NAME) == 0 && displayname.isNotBlank()) {
             syncVarp(Varp.PLAYER_HAS_DISPLAY_NAME)
         }
         // Sync attack priority options.
@@ -105,7 +105,7 @@ on_login {
                 player.setInterfaceEvents(399, 3, 0..7, 14)
                 player.setComponentText(399, 9, "Completed: 0/154")
                 player.setComponentText(399, 10, "Quest Points: 0/290")
-                player.setComponentText(712, 1, text = player.username)
+                player.setComponentText(712, 1, text = player.displayname)
                 player.setComponentText(712, 3, text = player.combatLevel.toString())
                 return@forEach
             }

@@ -20,7 +20,7 @@ class OnlinePlayersController(req: Request, resp: Response, auth: Boolean) : Con
 
             // Main Player Object
 
-            pObj.addProperty("username", player.username)
+            pObj.addProperty("username", player.displayname)
             pObj.addProperty("privilege", player.privilege.id)
             pObj.addProperty("gameMode", player.gameMode)
             pObj.addProperty("combatLvl", player.combatLevel)

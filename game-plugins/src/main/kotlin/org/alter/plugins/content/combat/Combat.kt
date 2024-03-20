@@ -2,7 +2,6 @@ package org.alter.plugins.content.combat
 
 import org.alter.game.action.PawnPathAction
 import org.alter.game.model.Tile
-import org.alter.game.model.World
 import org.alter.game.model.attr.AttributeKey
 import org.alter.game.model.attr.COMBAT_TARGET_FOCUS_ATTR
 import org.alter.game.model.attr.LAST_HIT_ATTR
@@ -212,13 +211,13 @@ object Combat {
                 }
 
                 if (!inPvpArea(target)) {
-                    pawn.message("You can't attack ${target.username} there.")
+                    pawn.message("You can't attack ${target.displayname} there.")
                     return false
                 }
 
                 val combatLvlRange = getValidCombatLvlRange(pawn)
                 if (target.combatLevel !in combatLvlRange) {
-                    pawn.message("You can't attack ${target.username} - your level different is too great.")
+                    pawn.message("You can't attack ${target.displayname} - your level different is too great.")
                     return false
                 }
             }

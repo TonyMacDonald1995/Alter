@@ -9,20 +9,19 @@ object AccountTab {
     /**
      * Account Tab Buttons
      */
-
-    const val UPGRADE_NOW_ID = 26
-    const val BENEFITS_ID = 31
-    const val INBOX_ID = 38
-    const val NAME_CHANGER_ID = 45
-    //const val POLL_ID = 0
-    const val HISTORY_ID = 60
-    const val NEWS_ID = 67
-    const val ARCHIVE_ID = 72
-    const val WEBSITE_ID = 80
-    const val GE_ID = 82
-    const val WIKI_ID = 84
-    const val SUPPORT_ID = 81
-    const val HISCORE_ID = 83
-    const val MERCH_ID = 85
-
+    enum class Buttons(val buttonId: Int) {
+        UPGRADE_NOW(26),
+        BENEFITS(31),
+        INBOX(38),
+        NAME_CHANGER(45),
+        HISTORY(60),
+        NEWS(67),
+        ARCHIVE(72),
+        WEBSITE(80),
+        SUPPORT(81),
+        GE(82),
+        HISCORE(83),
+        WIKI(84),
+        MERCH(85)
+    }
 }

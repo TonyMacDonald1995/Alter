@@ -1,6 +1,5 @@
 import org.alter.game.model.skill.SkillSet
 import org.alter.plugins.content.interfaces.xpdrops.XpSettings
-import kotlin.math.abs
 import kotlin.math.roundToInt
 
 /**
@@ -82,7 +81,7 @@ on_xp_button(TRACKER_COMPONENT_ID) {
             player.setVarp(261, player.getSkills().calculateTotalXp.roundToInt())
         }
         else -> {
-            println("Unknown Slot $slot by Player: ${player.username}") // @TODO No logger yet..
+            println("Unknown Slot $slot by Player: ${player.displayname}") // @TODO No logger yet..
             return@on_xp_button
         }
     }
@@ -110,7 +109,7 @@ on_xp_button(GOAL_COMPONENT_ID) {
             player.setVarp(262, getClosestNumber(player.getSkills().calculateTotalXp.roundToInt()))
         }
         else -> {
-            println("Unknown Slot $slot by Player: ${player.username}") // @TODO No logger yet..
+            println("Unknown Slot $slot by Player: ${player.displayname}") // @TODO No logger yet..
             return@on_xp_button
         }
     }

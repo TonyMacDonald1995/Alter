@@ -24,7 +24,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.alter.game.model.Tile
+import org.alter.game.model.attr.RETURN_VALUE_ATTR
 import java.net.URLClassLoader
 import java.nio.file.Files
 import java.nio.file.Path
@@ -895,6 +895,17 @@ class PluginRepository(val world: World) {
             return true
         }
         return false
+    }
+
+    fun bindReturnValue(plugin: Plugin.() -> Unit) {
+        returnValuePlugins.add(plugin)
+    }
+
+    fun executeReturnValue(p: Player, returnValue: Any?) {
+        returnValuePlugins.forEach { plugin ->
+            p.attr.put(RETURN_VALUE_ATTR, returnValue)
+            p.executePlugin(plugin)
+        }
     }
 
     fun bindButton(parent: Int, child: Int, plugin: Plugin.() -> Unit) {

@@ -111,7 +111,7 @@ class Client(val channel: Channel, world: World) : Player(world) {
 
     override fun toString(): String = MoreObjects.toStringHelper(this)
             .add("login_username", loginUsername)
-            .add("username", username)
+            .add("username", displayname)
             .add("channel", channel)
             .toString()
 
@@ -125,7 +125,7 @@ class Client(val channel: Channel, world: World) : Player(world) {
             client.clientWidth = request.clientWidth
             client.clientHeight = request.clientHeight
             client.loginUsername = request.username
-            client.username = request.username
+            client.displayname = request.username
             client.uuid = request.uuid
             client.currentXteaKeys = request.xteaKeys
             return client

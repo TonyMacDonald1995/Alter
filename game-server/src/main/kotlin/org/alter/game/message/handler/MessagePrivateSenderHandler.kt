@@ -16,7 +16,7 @@ class MessagePrivateSenderHandler : MessageHandler<MessagePrivateSenderMessage> 
         huffman.decompress(message.message, decompressed, message.length)
         val unpacked = String(decompressed, 0, message.length)
 
-        logger.info { "Sender: ${client.username} - Target: ${message.target} - Message: [${message.length}] $unpacked" }
+        logger.info { "Sender: ${client.displayname} - Target: ${message.target} - Message: [${message.length}] $unpacked" }
 
         val target = world.getPlayerForName(message.target)
         if (target != null) {
