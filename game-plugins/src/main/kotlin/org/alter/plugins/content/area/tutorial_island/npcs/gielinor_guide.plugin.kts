@@ -13,6 +13,7 @@ GIELINOR_GUIDE.respawns = true
 GIELINOR_GUIDE.walkRadius = 3
 world.spawn(GIELINOR_GUIDE)
 TutorialIsland.GUIDE_NPC_INDEX = GIELINOR_GUIDE.index
+GIELINOR_GUIDE.setActive(true)
 
 on_npc_option(Npcs.GIELINOR_GUIDE, "talk-to") {
     player.queue(TaskPriority.WEAK) {

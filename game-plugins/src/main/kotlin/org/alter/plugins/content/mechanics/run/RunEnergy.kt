@@ -8,7 +8,7 @@ import org.alter.api.EquipmentType
 import org.alter.api.Skills
 import org.alter.api.cfg.Varp
 import org.alter.api.ext.*
-import org.alter.plugins.content.area.tutorial_island.events.ToggleRunEvent
+import org.alter.plugins.content.area.tutorial_island.Tutorial_island_plugin
 import kotlin.math.max
 import kotlin.math.min
 
@@ -29,7 +29,7 @@ object RunEnergy {
     fun toggle(p: Player) {
         if (p.runEnergy >= 100.0) {
             p.toggleVarp(RUN_ENABLED_VARP)
-            p.triggerEvent(ToggleRunEvent)
+            p.triggerEvent(Tutorial_island_plugin.ToggleRunEvent)
         } else {
             p.setVarp(RUN_ENABLED_VARP, 0)
             p.message("You don't have enough run energy left.")

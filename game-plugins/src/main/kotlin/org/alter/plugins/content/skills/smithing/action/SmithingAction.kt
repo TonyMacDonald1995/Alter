@@ -4,11 +4,10 @@ import org.alter.game.fs.def.ItemDef
 import org.alter.game.model.queue.QueueTask
 import org.alter.api.Skills
 import org.alter.api.cfg.Items
+import org.alter.api.cfg.Varp
+import org.alter.api.ext.*
+import org.alter.plugins.content.area.tutorial_island.Tutorial_island_plugin
 
-import org.alter.api.ext.messageBox
-import org.alter.api.ext.playSound
-import org.alter.api.ext.player
-import org.alter.api.ext.prefixAn
 import org.alter.plugins.content.skills.smithing.data.Bar
 import org.alter.plugins.content.skills.smithing.data.SmithingMetaData
 
@@ -85,6 +84,8 @@ object SmithingAction {
             if (transaction.hasSucceeded()) {
                 inventory.add(meta.id, meta.numProduced)
                 player.addXp(Skills.SMITHING, (meta.barCount * meta.bar.smithXp))
+                if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 1000 && meta.id == Items.BRONZE_DAGGER)
+                    player.triggerEvent(Tutorial_island_plugin.CreateBronzeDaggerEvent)
             }
 
         }
@@ -138,6 +139,13 @@ object SmithingAction {
     private suspend fun canSmith(task: QueueTask, meta: SmithingMetaData) : Boolean {
         if (canSmithBar(task, meta.bar)) {
             val player = task.player
+
+            if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 1000) {
+                if (meta.id != Items.BRONZE_DAGGER) {
+                    player.queue { messageBox("You cannot make this on Tutorial Island.") }
+                    return false
+                }
+            }
 
             if (meta.level > player.getSkills().getCurrentLevel(Skills.SMITHING)) {
                 task.messageBox(INSUFFICIENT_LEVEL_ITEM.format(meta.level, meta.name.prefixAn()))

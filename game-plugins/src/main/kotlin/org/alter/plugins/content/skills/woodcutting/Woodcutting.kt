@@ -11,9 +11,7 @@ import org.alter.game.model.entity.DynamicObject
 import org.alter.game.model.entity.GameObject
 import org.alter.game.model.entity.Player
 import org.alter.game.model.queue.QueueTask
-import org.alter.plugins.content.area.tutorial_island.events.ChopTreeEvent
-import org.alter.plugins.content.area.tutorial_island.events.TreeCutDownEvent
-import org.alter.plugins.content.area.tutorial_island.staticDialog
+import org.alter.plugins.content.area.tutorial_island.Tutorial_island_plugin
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -33,13 +31,33 @@ object Woodcutting {
 
         val logName = p.world.definitions.get(ItemDef::class.java, tree.log).name
         val axe = AxeType.values.firstOrNull { p.getSkills().getBaseLevel(Skills.WOODCUTTING) >= it.level && (p.equipment.contains(it.item) || p.inventory.contains(it.item)) }!!
+        var depleteTask: QueueTask? = null
 
         if (it.player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) >= 1000) {
             p.filterableMessage("You swing your axe at the tree.")
         } else {
-            p.triggerEvent(ChopTreeEvent)
+            p.triggerEvent(Tutorial_island_plugin.ChopTreeEvent)
         }
+
+        if (tree.depleteTime != null) {
+            p.world.queue {
+                depleteTask = this
+                wait(tree.depleteTime)
+                val trunk = DynamicObject(obj, trunkId)
+                p.world.spawn(trunk)
+                p.playSound(Sound.TREE_FALL)
+                wait(tree.respawnTime.random())
+                p.world.spawn(DynamicObject(obj))
+            }
+        }
+
+        it.terminateAction = {
+            depleteTask?.terminate()
+            depleteTask = null
+        }
+
         while (true) {
+
             p.animate(axe.animation)
             it.wait(2)
 
@@ -49,40 +67,30 @@ object Woodcutting {
             }
 
             val level = p.getSkills().getCurrentLevel(Skills.WOODCUTTING)
-            //TODO Rework Woodcutting
-            if (level.interpolateCheck(minChance = 60, maxChance = 190)) {
+            if (level.interpolateCheck(minChance = (tree.lowChance * axe.modifier).toInt(), maxChance = (tree.highChance * axe.modifier).toInt())) {
 
                 if(p.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 1000) {
                     p.queue {
                         itemMessageBox(message = "You manage to cut some logs.", item = Items.LOGS_2511, amountOrZoom = 400)
                     }
-                    p.triggerEvent(TreeCutDownEvent)
+                    p.triggerEvent(Tutorial_island_plugin.TreeCutDownEvent)
                 }
 
                 if(p.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) >= 1000) {
                     p.filterableMessage("You get some ${logName.pluralSuffix(2)}.")
                 }
 
-                //p.playSound(3600)
                 p.inventory.add(tree.log)
                 p.addXp(Skills.WOODCUTTING, tree.xp)
 
-                if (p.world.random(tree.depleteChance) == 0) {
-                    p.animate(-1)
-
-                    if (trunkId != -1) {
-                        val world = p.world
-                        world.queue {
-                            val trunk = DynamicObject(obj, trunkId)
-                            //world.remove(obj)
-                            world.spawn(trunk)
-                            p.playSound(Sound.TREE_FALL)
-                            wait(tree.respawnTime.random())
-                            //world.remove(trunk)
-                            world.spawn(DynamicObject(obj))
-                        }
+                if (tree.depleteTime == null) {
+                    p.world.queue {
+                        val trunk = DynamicObject(obj, trunkId)
+                        p.world.spawn(trunk)
+                        p.playSound(Sound.TREE_FALL)
+                        wait(tree.respawnTime.random())
+                        p.world.spawn(DynamicObject(obj))
                     }
-                    break
                 }
             }
             it.wait(2)

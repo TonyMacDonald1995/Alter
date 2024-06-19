@@ -659,17 +659,11 @@ enum class Song(val title: String, val id: Int) {
         val values = values()
 
         fun getTitle(id: Int): String {
-            values.forEach { song ->
-                if (song.id == id) return song.title
-            }
-            return ""
+            return values.firstOrNull { it.id == id }?.title ?: ""
         }
 
         fun getId(title: String): Int {
-            values.forEach {
-                if (it.title == title) return it.id
-            }
-            return -1
+            return values.firstOrNull { it.title == title }?.id ?: -1
         }
 
     }

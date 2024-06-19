@@ -1,6 +1,8 @@
 package org.alter.plugins.content.skills.smithing
 
 import org.alter.game.model.attr.INTERACTING_OPT_ATTR
+import org.alter.plugins.content.area.tutorial_island.TutorialIsland
+import org.alter.plugins.content.area.tutorial_island.Tutorial_island_plugin
 import org.alter.plugins.content.skills.smithing.action.SmithingAction
 import org.alter.plugins.content.skills.smithing.data.Bar
 import org.alter.plugins.content.skills.smithing.data.SmithingData
@@ -84,6 +86,11 @@ standardAnvils.forEach { anvil ->
     // Bind the "smith" action on an anvil
     on_obj_option(obj = anvil, option = "smith") {
 
+        if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 340) {
+            player.queue { messageBox("This is an anvil used for smithing. You'll learn how to use it soon.") }
+            return@on_obj_option
+        }
+
         // The bar to smith
         val bar = getBar(player)
 
@@ -130,6 +137,7 @@ fun getBar(player: Player) : Bar? {
 fun openSmithingInterface(player: Player, bar: Bar) {
     player.setVarbit(smithingCurrentBarVarbit, smithingData.barIndices.getValue(bar.id))
     player.openInterface(interfaceId = smithingInterface, dest = InterfaceDestination.MAIN_SCREEN)
+    player.triggerEvent(Tutorial_island_plugin.OpenSmithingInterfaceEvent)
 }
 
 /**

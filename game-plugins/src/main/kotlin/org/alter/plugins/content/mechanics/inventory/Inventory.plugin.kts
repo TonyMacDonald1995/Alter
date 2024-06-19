@@ -27,6 +27,7 @@ on_button(InterfaceDestination.INVENTORY.interfaceId, 0) {
                                     floor.copyAttr(removed.item.attr)
                                 }
                                 world.spawn(floor)
+                                player.playSound(Sound.DROPPING_AN_ITEM)
                             }
                         }
                     }

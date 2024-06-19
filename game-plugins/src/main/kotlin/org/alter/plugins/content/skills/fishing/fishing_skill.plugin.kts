@@ -12,9 +12,12 @@ on_world_init {
 
     FishingSpots.values().forEach { spot ->
         spot.spotEntityId.forEach { entityId ->
-            on_npc_option(entityId, spot.option) {
-                val fishing = Fishing(player, spot)
-                player.queue { fishing.startFishing(this) }
+            spot.option.forEach { option ->
+                if (npcHasOption(entityId, option))
+                    on_npc_option(entityId, option) {
+                        val fishing = Fishing(player, spot)
+                        player.queue { fishing.startFishing(this) }
+                    }
             }
         }
     }

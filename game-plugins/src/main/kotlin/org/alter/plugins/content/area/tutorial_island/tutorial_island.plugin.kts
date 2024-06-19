@@ -1,10 +1,24 @@
 package org.alter.plugins.content.area.tutorial_island
 
-import org.alter.game.model.attr.*
-import org.alter.plugins.content.area.tutorial_island.events.*
-import org.alter.plugins.content.skills.cooking.Cooking
+import org.alter.game.event.Event
+import org.alter.game.model.attr.NEW_ACCOUNT_ATTR
+import org.alter.game.model.attr.TUTORIAL_CATCH_FISH
+import org.alter.game.model.attr.TUTORIAL_STARTED_FISHING
 import org.alter.plugins.content.skills.cooking.data.CookingFood
 import org.alter.plugins.content.skills.fishing.FishingSpots
+
+object ChopTreeEvent : Event
+object CookedBreadEvent : Event
+object CookedShrimpEvent : Event
+object CreateBreadDoughEvent : Event
+object FireStartedEvent : Event
+object ToggleRunEvent : Event
+object TreeCutDownEvent : Event
+object MineTinEvent : Event
+object MineCopperEvent : Event
+object CreateBronzeDaggerEvent : Event
+object OpenSmithingInterfaceEvent : Event
+
 
 on_login {
 
@@ -122,31 +136,81 @@ listenTabClick(InterfaceDestination.QUEST_ROOT) {
 }
 
 on_event(ChopTreeEvent::class.java) {
-    ChopTreeEvent.execute(player)
-}
-
-on_event(TreeCutDownEvent::class.java) {
-    TreeCutDownEvent.execute(player)
-}
-
-on_event(FireStartedEvent::class.java) {
-    FireStartedEvent.execute(player)
-}
-
-on_event(CookedShrimpEvent::class.java) {
-    CookedShrimpEvent.execute(player)
-}
-
-on_event(CreateBreadDoughEvent::class.java) {
-    CreateBreadDoughEvent.execute(player)
+    player.staticDialog("<col=0000ff>Please wait</col><br>Your character is now attempting to cut down the tree. Sit back for a moment while he does all the hard work.")
 }
 
 on_event(CookedBreadEvent::class.java) {
-    CookedBreadEvent.execute(player)
+    player.queue { itemMessageBox(item = Items.BREAD, message = "You manage to bake some bread.") }
+    if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 170) {
+        player.setVarp(Varp.TUTORIAL_ISLAND_PROGRESSION, 170)
+        TutorialIsland.process(player)
+    }
+}
+
+on_event(CookedShrimpEvent::class.java) {
+    if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 120) {
+        player.setVarp(Varp.TUTORIAL_ISLAND_PROGRESSION, 120)
+        TutorialIsland.process(player)
+    }
+}
+
+on_event(CreateBreadDoughEvent::class.java) {
+    player.queue { itemMessageBox(item = Items.BREAD_DOUGH, message = "You make some dough.") }
+    if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 160) {
+        player.setVarp(Varp.TUTORIAL_ISLAND_PROGRESSION, 160)
+        TutorialIsland.process(player)
+    }
+}
+
+on_event(FireStartedEvent::class.java) {
+    if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) <  90) {
+        player.setVarp(Varp.TUTORIAL_ISLAND_PROGRESSION, 90)
+        TutorialIsland.process(player)
+    }
 }
 
 on_event(ToggleRunEvent::class.java) {
-    ToggleRunEvent.execute(player)
+    if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) == 200) {
+        player.setVarp(Varp.TUTORIAL_ISLAND_PROGRESSION, 210)
+        TutorialIsland.process(player)
+    }
+}
+
+on_event(TreeCutDownEvent::class.java) {
+    if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 80) {
+        player.setVarp(Varp.TUTORIAL_ISLAND_PROGRESSION, 80)
+        TutorialIsland.process(player)
+    }
+}
+
+on_event(MineTinEvent::class.java) {
+    player.queue { itemMessageBox("You manage to mine some tin.", item = Items.TIN_ORE, amountOrZoom = 400) }
+    if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 310) {
+        player.setVarp(Varp.TUTORIAL_ISLAND_PROGRESSION, 310)
+        TutorialIsland.process(player)
+    }
+}
+
+on_event(MineCopperEvent::class.java) {
+    player.queue { itemMessageBox("You manage to mine some copper.", item = Items.COPPER_ORE, amountOrZoom = 400) }
+    if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 320) {
+        player.setVarp(Varp.TUTORIAL_ISLAND_PROGRESSION, 320)
+        TutorialIsland.process(player)
+    }
+}
+
+on_event(CreateBronzeDaggerEvent::class.java) {
+    if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 360) {
+        player.setVarp(Varp.TUTORIAL_ISLAND_PROGRESSION, 360)
+        TutorialIsland.process(player)
+    }
+}
+
+on_event(OpenSmithingInterfaceEvent::class.java) {
+    if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 350) {
+        player.setVarp(Varp.TUTORIAL_ISLAND_PROGRESSION, 350)
+        TutorialIsland.process(player)
+    }
 }
 
 fun listenTabClick(dest: InterfaceDestination, plugin: Plugin.() -> Unit) {

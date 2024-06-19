@@ -4,18 +4,20 @@ import org.alter.api.EquipmentType
 import org.alter.api.Skills
 import org.alter.api.cfg.Items
 import org.alter.api.cfg.Sound
+import org.alter.api.cfg.Varp
 import org.alter.api.ext.*
 import org.alter.game.fs.def.ItemDef
-import org.alter.game.fs.def.ObjectDef
 import org.alter.game.model.entity.DynamicObject
 import org.alter.game.model.entity.GameObject
 import org.alter.game.model.entity.Player
 import org.alter.game.model.queue.QueueTask
+import org.alter.plugins.content.area.tutorial_island.Tutorial_island_plugin
+import org.alter.plugins.content.area.tutorial_island.staticDialog
 import kotlin.math.min
 
 object Mining {
 
-    private const val MINING_ANIMATION_TIME = 16
+    private const val MINING_ANIMATION_TIME = 9
 
     suspend fun mineRock(it: QueueTask, obj: GameObject, rock: RockType) {
         val player = it.player
@@ -27,7 +29,11 @@ object Mining {
         val pick = PickaxeType.values.reversed().firstOrNull {
             player.getSkills().getBaseLevel(Skills.MINING) >= it.level && (player.equipment.contains(it.item) || player.inventory.contains(it.item))
         }!!
-        player.filterableMessage("You swing your pick at the rock.")
+        if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) >= 1000) {
+            player.filterableMessage("You swing your pick at the rock.")
+        } else {
+            player.staticDialog("<col=0000ff>Please wait</col><br>Your character is now attempting to mine the rock.<br>This should only take a few seconds.", false)
+        }
         var ticks = 0
         while (canMine(it, player, obj, rock)) {
             val animationWait = if (animations < 2) MINING_ANIMATION_TIME + 1 else MINING_ANIMATION_TIME
@@ -45,6 +51,19 @@ object Mining {
 
                 if (level.interpolateCheck(rock.lowChance, rock.highChance)) {
                     onSuccess(player, oreName, rock, obj)
+                    val depletedRockId = rock.objectIds[obj.id] ?: -1
+                    if (depletedRockId != -1) {
+                        player.world.queue {
+                            val depletedOre = DynamicObject(obj, depletedRockId)
+                            player.world.remove(obj)
+                            player.world.spawn(depletedOre)
+                            wait(rock.respawnDelay)
+                            player.world.remove(depletedOre)
+                            player.world.spawn(DynamicObject(obj))
+                        }
+                        player.animate(-1)
+                        break
+                    }
                 }
             }
 
@@ -53,6 +72,20 @@ object Mining {
 
                 if (level.interpolateCheck(rock.lowChance, rock.highChance)) {
                     onSuccess(player, oreName, rock, obj)
+                    val depletedRockId = rock.objectIds[obj.id] ?: -1
+                    if (depletedRockId != -1) {
+                        player.world.queue {
+                            val depletedOre = DynamicObject(obj, depletedRockId)
+                            player.world.remove(obj)
+                            player.world.spawn(depletedOre)
+                            wait(rock.respawnDelay)
+                            player.world.remove(depletedOre)
+                            player.world.spawn(DynamicObject(obj))
+                        }
+                        player.animate(-1)
+                        break
+                    }
+
                 }
 
                 player.miningAccumulator -= 1
@@ -108,21 +141,14 @@ object Mining {
         }
         val reward = if (rock == RockType.ESSENCE && player.getSkills().getCurrentLevel(Skills.MINING) >= 30)
             Items.PURE_ESSENCE else rock.reward
-        val depletedRockId = player.world.definitions.get(ObjectDef::class.java, obj.id).depleted
-        if (depletedRockId != -1) {
-            world.queue {
-                val depletedOre = DynamicObject(obj, depletedRockId)
-                world.remove(obj)
-                world.spawn(depletedOre)
-                wait(rock.respawnDelay)
-                world.remove(depletedOre)
-                world.spawn(DynamicObject(obj))
-            }
-            player.playSound(Sound.MINE_ORE)
-        }
+
+        player.playSound(Sound.MINE_ORE)
         player.inventory.add(reward)
         player.addXp(Skills.MINING, rock.experience)
         player.filterableMessage("You manage to mine some $oreName.")
+        if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) < 1000) {
+            player.triggerEvent(if (reward == Items.COPPER_ORE) Tutorial_island_plugin.MineCopperEvent else Tutorial_island_plugin.MineTinEvent)
+        }
     }
 
     private suspend fun canMine(it: QueueTask, player: Player, obj: GameObject, rock: RockType): Boolean {

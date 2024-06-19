@@ -2,6 +2,7 @@ package org.alter.plugins.content.area.tutorial_island.objs
 
 import org.alter.plugins.content.area.tutorial_island.TutorialIsland
 import org.alter.plugins.content.area.tutorial_island.objs.door_module.init_tutorial_door
+import org.alter.plugins.content.area.tutorial_island.objs.door_module.init_tutorial_double_door
 
 val DOOR_CLOSED = 9398
 val DOOR_OPEN = 1539
@@ -37,8 +38,8 @@ val DOOR_OPEN = 1539
 //Start Room Door
 init_tutorial_door {
     config {
-        obj = 9398
-        replaceObj = 1539
+        obj = Objs.DOOR_9398
+        replaceObj = Objs.DOOR_1539
         replaceRot = 1
         replaceTile = Tile(3097, 3107, 0)
         doorTile = Tile(3098, 3107, 0)
@@ -54,8 +55,8 @@ init_tutorial_door {
 //Chef Door Entrance
 init_tutorial_door {
     config {
-        obj = 9709
-        replaceObj = 1539
+        obj = Objs.DOOR_9709
+        replaceObj = Objs.DOOR_1539
         doorTile = Tile(3079,3084,0)
         replaceTile = Tile(3078, 3084, 0)
         requiredVarpState = 130
@@ -68,8 +69,8 @@ init_tutorial_door {
 //Chef Door Exit
 init_tutorial_door {
     config {
-        obj = 9710
-        replaceObj = 1539
+        obj = Objs.DOOR_9710
+        replaceObj = Objs.DOOR_1539
         doorTile = Tile(3072,3090,0)
         replaceTile = Tile(3073, 3090, 0)
         replaceRot = 3
@@ -78,13 +79,14 @@ init_tutorial_door {
         insideTile = Tile(3073, 3090, 0)
         afterActionVarpState = 200
         errorMsg = "You need to finish the Master Chef's tasks first."
+        openSound = Sound.DOOR_OPEN
     }
 }
 //Quest Guide Door
 init_tutorial_door {
     config {
-        obj = 9716
-        replaceObj = 1539
+        obj = Objs.DOOR_9716
+        replaceObj = Objs.DOOR_1539
         replaceTile = Tile(3086, 3125, 0)
         replaceRot = 0
         doorTile = Tile(3086, 3126, 0)
@@ -92,5 +94,29 @@ init_tutorial_door {
         outsideTile = Tile(3086, 3126, 0)
         insideTile = Tile(3086, 3125, 0)
         afterActionVarpState = 220
+        openSound = Sound.DOOR_OPEN
+    }
+}
+
+init_tutorial_double_door {
+    config {
+        objLeft = Objs.GATE_9717
+        objRight = Objs.GATE_9718
+        replaceObjLeft = Objs.GATE_1573
+        replaceObjRight = Objs.GATE_1573
+        replaceTileLeft = Tile(3095, 9503, 0)
+        replaceTileRight = Tile(3095, 9502, 0)
+        replaceRotLeft = 1
+        replaceRotRight = 3
+        doorTileLeft = Tile(3094, 9503, 0)
+        doorTileRight = Tile(3094, 9502, 0)
+        outsideTileLeft = Tile(3094, 9503, 0)
+        outsideTileRight = Tile(3094, 9502, 0)
+        insideTileLeft = Tile(3095, 9503, 0)
+        insideTileRight = Tile(3095, 9502, 0)
+        requiredVarpState = 360
+        afterActionVarpState = 370
+        openSound = Sound.IRON_DOOR_OPEN
+        errorMsg = "You need to finish with Mining and Smithing first."
     }
 }

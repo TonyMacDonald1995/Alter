@@ -114,7 +114,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
     }
 
     /**
-     * Spawn an [Npc] on the given [tile].
+     * Spawn an [Npc] on the given [Tile].
      */
     fun spawn_npc(npc: Int, tile: Tile, walkRadius: Int = 0, direction: Direction = Direction.SOUTH) {
         val n = Npc(npc, tile, world)
@@ -142,7 +142,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
     }
 
     /**
-     * Spawn a [GroundItem] on the given coordinates.
+     * Spawn a [GroundItem] on the given [Tile].
      */
     fun spawn_item(item: Int, amount: Int, tile: Tile, respawnCycles: Int = GroundItem.DEFAULT_RESPAWN_CYCLES) {
         val ground = GroundItem(item, amount, Tile(tile))

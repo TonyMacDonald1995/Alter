@@ -1,8 +1,8 @@
 package org.alter.plugins.content.skills
 
+import org.alter.api.cfg.Graphic
 import org.alter.game.model.attr.LEVEL_UP_INCREMENT
 import org.alter.game.model.attr.LEVEL_UP_SKILL_ID
-import kotlin.random.Random
 
 
 set_level_up_logic {
@@ -22,16 +22,16 @@ set_level_up_logic {
      */
     player.queue {
         if(player.getSkills()[skill].currentLevel == 99) {
-            player.graphic(1388)
+            player.graphic(Graphic.FINAL_LEVEL_UP)
         } else {
             /**
              @TODO Each skill has it's own jingle -> Also diff sound when a player unlocks something new.
              @TODO https://oldschool.runescape.wiki/w/Jingles
              @TODO Also iirc when unlocking a new skill item it shows it on the message.
              */
-            var levelupJingles = listOf(29, 67, 50)
-            player.playJingle(levelupJingles[Random.nextInt(levelupJingles.size)])
-            player.graphic(199, 124)
+            player.playJingle(SkillJingle.getForSkill(skill).jingleId)
+            //player.graphic(199, 124)
+            player.graphic(Graphic.LEVEL_UP)
             player.message("Congratulations, you've just advanced your ${Skills.getSkillName(world, skill)} level. You are now level ${player.getSkills().getBaseLevel(skill)}.")
             world.spawn(AreaSound(player.tile, 2396, 1, 1))
         }

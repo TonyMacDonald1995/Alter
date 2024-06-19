@@ -1,6 +1,7 @@
 package org.alter.plugins.content.area.tutorial_island
 
 import org.alter.api.InterfaceDestination
+import org.alter.api.cfg.Song
 import org.alter.api.cfg.Varbit
 import org.alter.api.cfg.Varp
 import org.alter.api.ext.*
@@ -13,35 +14,36 @@ import org.alter.plugins.content.interfaces.displayname.openDisplayNameInterface
 
 object TutorialIsland {
 
-        var GUIDE_NPC_INDEX: Int = 0
-        var SURVIVAL_EXPERT_NPC_INDEX: Int = 0
-        var MASTER_CHEF_NPC_INDEX: Int = 0
-        var QUEST_GUIDE_NPC_INDEX: Int = 0
-        var MINING_INSTRUCTOR_NPC_INDEX: Int = 0
+    var GUIDE_NPC_INDEX: Int = 0
+    var SURVIVAL_EXPERT_NPC_INDEX: Int = 0
+    var MASTER_CHEF_NPC_INDEX: Int = 0
+    var QUEST_GUIDE_NPC_INDEX: Int = 0
+    var MINING_INSTRUCTOR_NPC_INDEX: Int = 0
+    var COMBAT_INSTRUCTOR_NPC_INDEX: Int = 0
 
 
-        val TAB_CHILD_IDS: HashMap<InterfaceDestination, Array<Int>> = hashMapOf(
-            Pair(InterfaceDestination.SETTINGS, arrayOf(35,46,38)),
-            Pair(InterfaceDestination.SKILLS, arrayOf(49,59,58)),
-            Pair(InterfaceDestination.QUEST_ROOT, arrayOf(50,60,59)),
-            Pair(InterfaceDestination.INVENTORY, arrayOf(51,61,53))
-        )
+    val TAB_CHILD_IDS: HashMap<InterfaceDestination, Array<Int>> = hashMapOf(
+        Pair(InterfaceDestination.SETTINGS, arrayOf(35,46,38)),
+        Pair(InterfaceDestination.SKILLS, arrayOf(49,59,58)),
+        Pair(InterfaceDestination.QUEST_ROOT, arrayOf(50,60,59)),
+        Pair(InterfaceDestination.INVENTORY, arrayOf(51,61,53))
+    )
 
-        val HIDDEN_INTERFACES = arrayOf(
-            InterfaceDestination.ATTACK,
-            InterfaceDestination.SKILLS,
-            InterfaceDestination.QUEST_ROOT,
-            InterfaceDestination.INVENTORY,
-            InterfaceDestination.EQUIPMENT,
-            InterfaceDestination.PRAYER,
-            InterfaceDestination.MAGIC,
-            InterfaceDestination.SOCIAL,
-            InterfaceDestination.ACCOUNT_MANAGEMENT,
-            InterfaceDestination.CLAN_CHAT,
-            InterfaceDestination.SETTINGS,
-            InterfaceDestination.EMOTES,
-            InterfaceDestination.MUSIC
-        )
+    val HIDDEN_INTERFACES = arrayOf(
+        InterfaceDestination.ATTACK,
+        InterfaceDestination.SKILLS,
+        InterfaceDestination.QUEST_ROOT,
+        InterfaceDestination.INVENTORY,
+        InterfaceDestination.EQUIPMENT,
+        InterfaceDestination.PRAYER,
+        InterfaceDestination.MAGIC,
+        InterfaceDestination.SOCIAL,
+        InterfaceDestination.ACCOUNT_MANAGEMENT,
+        InterfaceDestination.CLAN_CHAT,
+        InterfaceDestination.SETTINGS,
+        InterfaceDestination.EMOTES,
+        InterfaceDestination.MUSIC
+    )
 
     private fun init(player: Player, state: Int) {
         //player.openInterface(interfaceId = 614, dest = getDisplayComponentId(player.interfaces.displayMode), child = 1, modal = false)
@@ -208,6 +210,7 @@ object TutorialIsland {
             }
 
             220 -> {
+                player.setVarp(Varp.TUTORIAL_ISLAND_PROGRESS_BAR, 7)
                 player.sendHintArrow(1, QUEST_GUIDE_NPC_INDEX, 0, 0)
                 player.staticDialog("<col=0000ff>Quests</col><br>It's time to learn about quests! Just talk to the Quest Guide to get started.")
             }
@@ -230,35 +233,43 @@ object TutorialIsland {
             }
 
             260 -> {
-                player.playSong(144)
+                player.playSong(Song.SCAPE_CAVE.id)
                 player.setVarp(Varp.TUTORIAL_ISLAND_PROGRESS_BAR, 8)
                 player.sendHintArrow(1, MINING_INSTRUCTOR_NPC_INDEX, 0, 0)
                 player.staticDialog("<col=0000ff>Mining and Smithing</col><br>Next let's get you a weapon, or more to the point, you can make your first weapon yourself. Don't panic, the mining instructor will help you. Talk to him and he'll tell you all about it.")
             }
             300 -> {
-                player.sendHintArrow(2, 6116, 2592, 0)
+                player.sendHintArrow(2, 3077, 9504, 0)
                 player.staticDialog("<col=0000ff>Mining</col><br>It's quite simple really. To mine a rock, all you need to do is click on it. First up, try mining some tin.")
             }
             310 -> {
-                //TODO Mine Copper
+                player.sendHintArrow(2, 3083, 9501, 0)
+                player.staticDialog("<col=0000ff>Mining</col><br>Now that you have some tin ore, you just need some copper. To mine a rock, all you need to do is click on it.")
             }
             320 -> {
-                //TODO Smelt Bronze Bar
+                player.setVarp(Varp.TUTORIAL_ISLAND_PROGRESS_BAR, 9)
+                player.sendHintArrow(2, 3078, 9495, 0)
+                player.staticDialog("<col=0000ff>Smelting</col><br>You now have some tin ore and some copper ore. You can smelt these into a bronze bar. To do so, just click on the indicated furnace. Try it now.")
             }
             330 -> {
-                //TODO Talk to Mining Instructor
+                player.sendHintArrow(1, MINING_INSTRUCTOR_NPC_INDEX, 0, 0)
+                player.staticDialog("<col=0000ff>Smelting</col><br>You've made a bronze bar! Speak to the mining instructor and he'll show you how to make it into a weapon.")
             }
             340 -> {
-                //TODO Click Anvil
+                player.sendHintArrow(2, 3075, 9499, 0)
+                player.staticDialog("<col=0000ff>Smithing a dagger</col><br>To smith you'll need a hammer and enough metal bars to make the desired item, as well as a handy anvil. To start the process, click on the anvil, or alternatively use the bar on it.")
             }
             350 -> {
-                //TODO Smith Bronze Dagger
+                player.staticDialog("<col=0000ff>Smithing a dagger</col><br>Now you have the smithing menu open, you will see a list of all the things you can make. Only the dagger can be made at your skill level; this is shown by the white text under it. You'll need to select the dagger to continue.")
             }
             360 -> {
-                //TODO Enter Door to Vannaka
+                player.sendHintArrow(2, 3094, 9503, 0)
+                player.staticDialog("<col=0000ff>Moving on</col><br>Congratulations, you've made your first weapon. Now it's time to move on. Go through the gates shown by the arrow. Remember, you may need to move the camera to see your surroundings. Speak to the mining instructor for a recap at any time.")
             }
             370 -> {
-                //TODO Talk to Vannaka
+                player.setVarp(Varp.TUTORIAL_ISLAND_PROGRESS_BAR, 10)
+                player.sendHintArrow(1, COMBAT_INSTRUCTOR_NPC_INDEX, 0, 0)
+                player.staticDialog("<col=0000ff>Combat</col><br>In this area you will find out about melee and ranged combat. Speak to the guide and he will tell you all about it.")
             }
             390 -> {
                 //TODO Open Equipment Tab

@@ -5,9 +5,9 @@ import org.alter.plugins.content.area.tutorial_island.TutorialIsland
 val gate = world.getObject(Tile(3089, 3092, 0), 0)
 val ext = world.getObject(Tile(3089, 3091, 0), 0)
 
-val OBJS = intArrayOf(Objs.GATE_9470, Objs.GATE_9708)
+val objIds = arrayOf(Objs.GATE_9470, Objs.GATE_9708)
 
-OBJS.forEach { obj ->
+objIds.forEach { obj ->
     on_obj_option(obj, "Open") {
         if(player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) >= 120) {
             player.queue {

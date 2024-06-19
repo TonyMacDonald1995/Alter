@@ -7,9 +7,7 @@ import org.alter.game.fs.DefinitionSet
 import org.alter.game.fs.def.ItemDef
 import org.alter.game.model.entity.Player
 import org.alter.game.model.queue.QueueTask
-import org.alter.plugins.content.area.tutorial_island.events.CookedBreadEvent
-import org.alter.plugins.content.area.tutorial_island.events.CookedShrimpEvent
-import org.alter.plugins.content.area.tutorial_island.events.CreateBreadDoughEvent
+import org.alter.plugins.content.area.tutorial_island.Tutorial_island_plugin
 import org.alter.plugins.content.skills.cooking.data.CookingFood
 import org.alter.plugins.content.skills.cooking.data.CookingIngredient
 import org.alter.plugins.content.skills.cooking.data.CookingObj
@@ -52,9 +50,9 @@ class Cooking(private val defs: DefinitionSet) {
                 player.inventory.add(food.cookedItem, 1)
                 player.addXp(Skills.COOKING, food.xp)
                 if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) == 90)
-                    player.triggerEvent(CookedShrimpEvent)
+                    player.triggerEvent(Tutorial_island_plugin.CookedShrimpEvent)
                 else if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) == 160)
-                    player.triggerEvent(CookedBreadEvent)
+                    player.triggerEvent(Tutorial_island_plugin.CookedBreadEvent)
             }
             else if (level.interpolateCheck(minChance = food.lowChance, maxChance = food.highChance)) /*|| player.getVarp(TutorialIsland.COMPLETION_VARP) == 90 || player.getVarp(TutorialIsland.COMPLETION_VARP) == 160)*/ {
                 player.inventory.add(food.cookedItem, 1)
@@ -123,7 +121,7 @@ class Cooking(private val defs: DefinitionSet) {
             }
 
             if(player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) == 150) {
-                player.world.plugins.executeEvent(player, CreateBreadDoughEvent)
+                player.world.plugins.executeEvent(player, Tutorial_island_plugin.CreateBreadDoughEvent)
             } else {
                 player.filterableMessage("You combine the ingredients to make $name.")
             }

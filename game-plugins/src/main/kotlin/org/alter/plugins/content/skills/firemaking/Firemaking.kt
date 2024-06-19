@@ -13,7 +13,7 @@ import org.alter.game.model.entity.DynamicObject
 import org.alter.game.model.entity.GroundItem
 import org.alter.game.model.entity.Player
 import org.alter.game.model.queue.QueueTask
-import org.alter.plugins.content.area.tutorial_island.events.FireStartedEvent
+import org.alter.plugins.content.area.tutorial_island.Tutorial_island_plugin
 import org.alter.plugins.content.area.tutorial_island.staticDialog
 
 object Firemaking {
@@ -50,7 +50,7 @@ object Firemaking {
                 if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) >= 1000) {
                     player.filterableMessage("The fire catches and the logs begin to burn.")
                 } else if (player.getVarp(Varp.TUTORIAL_ISLAND_PROGRESSION) == 80) {
-                    player.world.plugins.executeEvent(player, FireStartedEvent)
+                    player.world.plugins.executeEvent(player, Tutorial_island_plugin.FireStartedEvent)
                 }
 
                 player.addXp(Skills.FIREMAKING, log.xp)

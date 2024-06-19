@@ -839,6 +839,7 @@ object Objs {
     const val CURTAIN_1534 = 1534
     const val DOOR_1535 = 1535
     const val DOOR_1536 = 1536
+    const val DOOR_1539 = 1539
     const val DOOR_1540 = 1540
     const val DOOR_1541 = 1541
     const val DOOR_1543 = 1543
@@ -862,6 +863,7 @@ object Objs {
     const val GATE_1570 = 1570
     const val GATE_1571 = 1571
     const val GATE_1572 = 1572
+    const val GATE_1573 = 1573
     const val TRAPDOOR_1579 = 1579
     const val TRAPDOOR_1580 = 1580
     const val TRAPDOOR_1581 = 1581

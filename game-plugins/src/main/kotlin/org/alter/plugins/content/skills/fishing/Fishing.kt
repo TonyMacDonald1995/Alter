@@ -45,7 +45,7 @@ class Fishing(val player: Player, private val spot: FishingSpots) {
     }
 
     private fun getRandomFish(): Fish {
-        return spot.getFish().filter { player.getSkills().getBaseLevel(Skills.FISHING) >= it.level }.random()
+        return spot.fish.filter { player.getSkills().getBaseLevel(Skills.FISHING) >= it.level }.random()
     }
 
     private fun canFish(): Boolean {
@@ -78,7 +78,7 @@ class Fishing(val player: Player, private val spot: FishingSpots) {
 
     private fun hasLevel(): Boolean {
         var hasLevel = false
-        spot.getFish().forEach { fish ->
+        spot.fish.forEach { fish ->
             if (player.getSkills().getCurrentLevel(Skills.FISHING) >= fish.level)
                 hasLevel = true
         }
@@ -87,7 +87,7 @@ class Fishing(val player: Player, private val spot: FishingSpots) {
 
     private fun minLevel(): Int {
         var minLevel = 0
-        spot.getFish().forEach { fish ->
+        spot.fish.forEach { fish ->
             if (fish.level > minLevel)
                 minLevel = fish.level
         }

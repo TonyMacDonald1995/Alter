@@ -53,25 +53,24 @@ import org.alter.api.ext.player
 //)
 
 val rockValues = RockType.values
-val rockObjects = RockType.objects
-val depletedRockSet = rockObjects.map { id ->
-    world.definitions.get(ObjectDef::class.java, id).depleted
-}.toSet()
+val depletedRocks = mutableListOf<Int>()
 
-rockObjects.forEach { rock ->
-    on_obj_option(obj = rock, option = 1) {
-        val obj = player.getInteractingGameObj()
-        val rockType = rockValues.find { obj.id in it.objectIds } ?: return@on_obj_option
-        player.queue {
-            Mining.mineRock(this, obj, rockType)
+rockValues.forEach { rock ->
+    rock.objectIds.forEach { rockObjectIds ->
+        on_obj_option(obj = rockObjectIds.key, option = 1) {
+            val obj = player.getInteractingGameObj()
+            val rockType = rockValues.find { obj.id in it.objectIds.keys } ?: return@on_obj_option
+            player.queue {
+                Mining.mineRock(this, obj, rockType)
+            }
         }
-    }
-}
-
-depletedRockSet.forEach { depletedRock ->
-    on_obj_option(obj = depletedRock, option = 1) {
-        player.animate(-1)
-        player.playSound(Sound.PROSPECT)
-        player.filterableMessage("There is currently no ore available in this rock.")
+        if (rockObjectIds.value != -1 && !depletedRocks.contains(rockObjectIds.value)) {
+            depletedRocks.add(rockObjectIds.value)
+            on_obj_option(obj = rockObjectIds.value, option = 1) {
+                player.animate(-1)
+                player.playSound(Sound.PROSPECT)
+                player.filterableMessage("There is currently no ore available in this rock.")
+            }
+        }
     }
 }
